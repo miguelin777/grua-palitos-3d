@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Grúa de Palitos</title>
 <meta name="description" content="Modelo 3D interactivo de nuestra grúa hecha con palitos de madera, alambre e hilo. Simulación de carga, estabilidad y esfuerzos.">
+<meta name="theme-color" content="#F2B705">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Grúa de Palitos · modelo 3D interactivo">
+<meta property="og:description" content="Gírala, cuélgale pesas y mira cuándo se vuelca. Simulación de carga, estabilidad y esfuerzos de nuestra grúa de palitos.">
+<meta property="og:url" content="https://miguelin777.github.io/grua-palitos-3d/">
+<meta property="og:image" content="https://miguelin777.github.io/grua-palitos-3d/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F2B705'/%3E%3Cpath d='M10 27V10M14 27V10M10 15l4 4M14 15l-4 4M10 22h4M5 10h23M14 10L10 5M10 5l-5 5M28 10v6' stroke='%23161A1D' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -132,12 +140,58 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .bom li span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
 .sec-title{margin:0;font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2)}
 
+/* Dock inferior: recorrido, leyendas, vistas y herramientas */
+.dock{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100% - 400px);pointer-events:none}
+.dock>*{pointer-events:auto}
+.dock-row{display:flex;flex-wrap:wrap;gap:8px}
+.views,.tools{display:flex;gap:3px;padding:3px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tools .ic{width:34px;height:30px;display:grid;place-items:center;border:0;background:transparent;border-radius:7px;color:var(--ink-2)}
+.tools .ic:hover{background:var(--line);color:var(--ink)}
+.tools .ic[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.tool-tour{border:0;background:var(--accent);color:var(--on-accent);border-radius:7px;padding:0 12px 0 9px;height:30px;font:600 12.5px/1 var(--f-body);display:flex;align-items:center;gap:6px}
+.tools svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px solid var(--line-2);background:var(--panel-solid)}
+
+.tour{width:min(430px,100%);padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);box-shadow:0 14px 40px -18px rgba(0,0,0,.4);display:grid;gap:8px}
+.tour-top{display:flex;justify-content:space-between;align-items:center}
+.tour-n{font:500 11px var(--f-mono);letter-spacing:.12em;color:var(--accent-text);font-variant-numeric:tabular-nums}
+.tour .x{border:0;background:transparent;font-size:22px;line-height:1;color:var(--ink-2);width:28px;height:28px;border-radius:6px;margin:-6px -6px 0 0}
+.tour .x:hover{background:var(--line);color:var(--ink)}
+.tour h2{margin:0;font:800 32px/.92 var(--f-display);text-transform:uppercase;text-wrap:balance}
+.tour p{margin:0;font-size:14px;line-height:1.52}
+.tour-bar{display:flex;gap:3px;margin-top:2px}
+.tour-bar i{flex:1;height:3px;border-radius:2px;background:var(--line-2);transition:background .3s}
+.tour-bar i.on{background:var(--accent)}
+.tour-btns{display:flex;justify-content:flex-end;gap:8px}
+.btn:disabled{opacity:.4;cursor:default}
+
+.toast{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-8px);background:var(--ink);color:var(--bg);font:500 13px var(--f-body);padding:9px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:10;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.chart-box{display:grid;gap:6px;padding:12px;border-radius:10px;background:var(--line)}
+#chart{display:block;width:100%;height:auto;background:var(--panel-solid);border-radius:6px;touch-action:none;cursor:crosshair}
+#chart .gl{stroke:var(--line);stroke-width:1}
+#chart .tk,#chart .ax{fill:var(--ink-2);font:9px var(--f-mono)}
+#chart .area{fill:color-mix(in srgb,var(--ok) 20%,transparent)}
+#chart .ln-tip{fill:none;stroke:var(--warn);stroke-width:1.8;stroke-dasharray:5 3}
+#chart .ln-str{fill:none;stroke:var(--bad);stroke-width:1.8}
+#chart .mk{fill:var(--st);stroke:var(--panel-solid);stroke-width:2.5}
+#chart .mk-h{stroke:var(--st);stroke-width:1;stroke-dasharray:2 2}
+.chart-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--ink-2)}
+.k{display:inline-block;width:14px;vertical-align:middle;margin-right:6px}
+.k-safe{height:8px;border-radius:2px;background:color-mix(in srgb,var(--ok) 35%,transparent)}
+.k-tip{border-top:2px dashed var(--warn)}
+.k-str{border-top:2px solid var(--bad)}
+
+/* Modo presentación */
+.present .panel,.present .chips,.present .views,.present .legend,.present .tour{display:none!important}
+.present .dock{max-width:calc(100% - 32px)}
+
 /* Vistas */
-.views{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:3px;padding:3px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .views button{border:0;background:transparent;padding:8px 11px;border-radius:7px;font:500 11.5px/1 var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
 .views button:hover{color:var(--ink);background:var(--line)}
 .views button.on{color:var(--ink);background:var(--line-2)}
-.legend{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(68px + env(safe-area-inset-bottom,0px));width:min(270px,calc(100% - 32px));padding:10px 12px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;gap:6px;font-size:12px}
+.legend{width:min(270px,100%);padding:10px 12px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;gap:6px;font-size:12px}
 .legend .bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--s0) 0%,var(--s1) 36%,var(--s2) 60%,var(--s3) 80%,var(--s4) 100%)}
 .legend .ticks{display:flex;justify-content:space-between;font:400 10.5px var(--f-mono);color:var(--ink-2)}
 .legend b{font-weight:600}
@@ -161,13 +215,17 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   .eyebrow{font-size:10px}
   .hazard{width:96px;height:5px}
   .chip{font-size:11px;padding:5px 8px}
-  .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:min(50%,460px);border-radius:16px 16px 0 0;border-left:0;border-right:0;border-bottom:0;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:min(46%,440px);border-radius:16px 16px 0 0;border-left:0;border-right:0;border-bottom:0;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
   .sheet-handle{display:block;border:0;background:transparent;height:20px;width:100%;position:relative;flex:none}
   .sheet-handle::after{content:"";position:absolute;left:50%;top:8px;width:42px;height:4px;margin-left:-21px;border-radius:2px;background:var(--line-2)}
   .seg{margin-top:0}
   .panel.collapsed .pane-wrap{display:none}
-  .views{bottom:calc(var(--sheet-h,0px) + 10px)}
-  .legend{bottom:calc(var(--sheet-h,0px) + 60px)}
+  .dock{bottom:calc(var(--sheet-h,0px) + 10px);max-width:calc(100% - 32px)}
+  .touring .legend,.touring .dock-row,.touring .chips{display:none!important}
+  .touring .dock{max-width:none;right:max(16px,env(safe-area-inset-right,0px))}
+  .tour{padding:12px 14px;width:100%}
+  .tour h2{font-size:26px}
+  .tour p{font-size:13px}
   .tip{display:none}
 }
 @media (max-width: 380px){ .views button{padding:8px 8px} .brand h1{font-size:30px} }
@@ -205,22 +263,28 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
     </div>
     <div class="pane-wrap">
       <section class="pane" data-pane="carga">
+        <p class="note">La grúa real no lleva pesas ni monedas. Mueve estos controles para simular cuánto aguantaría.</p>
         <div class="ctl">
           <label for="rng-x">Radio del carro <output id="o-x">–</output></label>
-          <input type="range" id="rng-x" min="130" max="540" step="5" value="420">
+          <input type="range" id="rng-x" min="130" max="520" step="5" value="420">
         </div>
         <div class="ctl">
           <label for="rng-load">Pesas colgadas <output id="o-load">–</output></label>
-          <input type="range" id="rng-load" min="0" max="1500" step="10" value="250">
+          <input type="range" id="rng-load" min="0" max="1500" step="10" value="0">
         </div>
         <div class="ctl">
           <label for="rng-cw">Lastre en la charola <output id="o-cw">–</output></label>
-          <input type="range" id="rng-cw" min="0" max="600" step="10" value="200">
+          <input type="range" id="rng-cw" min="0" max="600" step="10" value="0">
         </div>
         <div class="gauge" id="gauge" data-state="ok">
           <div class="gauge-head"><span>Centro de gravedad vs. apoyo</span><b id="o-cg">–</b></div>
           <div class="gauge-track"><div class="gauge-zone" id="g-zone"></div><div class="gauge-axis" id="g-axis"></div><div class="gauge-cg" id="g-cg"></div></div>
           <div class="gauge-scale"><span>Contrapluma</span><span>Torre</span><span>Punta</span></div>
+        </div>
+        <div class="chart-box" id="chart-box" data-state="ok">
+          <div class="gauge-head"><span>Tabla de cargas</span><b id="o-chart">–</b></div>
+          <svg id="chart" viewBox="0 0 320 178" role="img" aria-label="Carga máxima según el radio del carro. Toca la gráfica para mover el carro y la carga."></svg>
+          <div class="chart-legend"><span><i class="k k-safe"></i>Carga permitida</span><span><i class="k k-tip"></i>Vuelco</span><span><i class="k k-str"></i>Resistencia</span></div>
         </div>
         <dl class="readout" id="readout" data-state="ok">
           <div><dt>Momento de vuelco</dt><dd id="o-mo">–</dd></div>
@@ -246,8 +310,8 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
         <label class="switch"><span>Cotas<small>Alcance, contrapluma, altura y huella</small></span><input type="checkbox" id="tgl-dims"></label>
         <label class="switch"><span>Centro de gravedad<small>Punto de equilibrio y zona de apoyo en la mesa</small></span><input type="checkbox" id="tgl-cg" checked></label>
         <label class="switch"><span>Giro automático<small>La cámara rodea la grúa</small></span><input type="checkbox" id="tgl-rotate"></label>
-        <label class="switch"><span>Mesa<small>La mesa redonda de las fotos</small></span><input type="checkbox" id="tgl-table" checked></label>
-        <p class="note">Arrastra para girar, rueda o pellizco para acercar, clic derecho o dos dedos para desplazar. Toca una pieza para ver sus datos.</p>
+        <label class="switch"><span>Mesa<small>La mesa redonda de las fotos</small></span><input type="checkbox" id="tgl-table" checked></label>        <p class="note">Arrastra para girar, rueda o pellizco para acercar, clic derecho o dos dedos para desplazar. Toca una pieza para ver sus datos.</p>
+        <p class="note">Atajos: <kbd>1</kbd>–<kbd>4</kbd> vistas · <kbd>P</kbd> presentación · <kbd>Esc</kbd> salir · <kbd>←</kbd> <kbd>→</kbd> en el recorrido.</p>
       </section>
 
       <section class="pane" data-pane="piezas" hidden>
@@ -262,22 +326,40 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
     </div>
   </aside>
 
-  <nav class="views" aria-label="Vistas de cámara">
-    <button data-view="3d" class="on">3D</button>
-    <button data-view="lateral">Lateral</button>
-    <button data-view="frente">Frente</button>
-    <button data-view="planta">Planta</button>
-  </nav>
-
-  <div class="legend" id="legend" hidden>
-    <div><b>Esfuerzos</b> · uso estimado de cada palito</div>
-    <div class="bar"></div>
-    <div class="ticks"><span>0 %</span><span>50 %</span><span>100 %</span><span>125 %+</span></div>
+  <div class="dock" id="dock">
+    <div class="tour" id="tour" hidden role="dialog" aria-label="Recorrido guiado">
+      <div class="tour-top"><span class="tour-n" id="tour-n">01</span><button class="x" id="tour-x" aria-label="Salir del recorrido">×</button></div>
+      <h2 id="tour-t"></h2>
+      <p id="tour-p"></p>
+      <div class="tour-bar" id="tour-bar"></div>
+      <div class="tour-btns"><button class="btn ghost" id="tour-prev">Anterior</button><button class="btn" id="tour-next">Siguiente</button></div>
+    </div>
+    <div class="legend" id="legend" hidden>
+      <div><b>Esfuerzos</b> · uso estimado de cada palito</div>
+      <div class="bar"></div>
+      <div class="ticks"><span>0 %</span><span>50 %</span><span>100 %</span><span>125 %+</span></div>
+    </div>
+    <div class="legend" id="xlegend" hidden>
+      <div><b>Rayos X</b> · <span id="x-count">–</span></div>
+    </div>
+    <div class="dock-row">
+      <nav class="views" aria-label="Vistas de cámara">
+        <button data-view="3d" class="on">3D</button>
+        <button data-view="lateral">Lateral</button>
+        <button data-view="frente">Frente</button>
+        <button data-view="planta">Planta</button>
+      </nav>
+      <div class="tools" role="toolbar" aria-label="Herramientas">
+        <button class="tool-tour" id="t-tour"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.2l7.5 4.8L5 12.8z" fill="currentColor" stroke="none"/></svg>Recorrido</button>
+        <button class="ic" id="t-build" title="Armar de nuevo" aria-label="Armar de nuevo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 13.5h11M4 10.5h8M5.5 7.5h5M7 4.5h2M8 1.8v2.7"/></svg></button>
+        <button class="ic" id="t-shot" title="Guardar imagen" aria-label="Guardar imagen"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 5.5h2.6L6 3.5h4l1.4 2H14v7.5H2z"/><circle cx="8" cy="9.2" r="2.3"/></svg></button>
+        <button class="ic" id="t-present" title="Modo presentación (P)" aria-label="Modo presentación" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.8" y="2.5" width="12.4" height="8.5" rx="1"/><path d="M8 11v2.5M5 13.5h6M6.6 5.2l3 1.6-3 1.6z"/></svg></button>
+        <button class="ic" id="t-full" title="Pantalla completa" aria-label="Pantalla completa"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></button>
+      </div>
+    </div>
   </div>
-  <div class="legend" id="xlegend" hidden>
-    <div><b>Rayos X</b> · <span id="x-count">–</span></div>
-  </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="tip" id="tip" hidden></div>
   <div class="loading" id="loading">Armando la grúa…</div>
 </div>
@@ -307,29 +389,31 @@ const cssVar=n=>getComputedStyle(document.documentElement).getPropertyValue(n).t
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const rand=mulberry32(20261023);
 
-/* ---------- Medidas (mm) ---------- */
+/* ---------- Medidas (mm) — medidas reales: 82 × 25 × 22 cm, base 26 × 26 cm ---------- */
 const SL=150, SW=18, ST=2, LAY=ST+0.12, STICK_G=3.2;
-const bx=125, bz=100, tx=92, tz=68, H=185;
+const bx=121, bz=121;            // ejes del marco de la base (26 cm por fuera)
+const H=209;                     // altura de los postes
+const tzT=101, XTOP=205;         // marco superior: 41 × 22 cm
 const yb=1.5*LAY+0.1;            // centro del marco de la base
-const y0=yb+4*LAY;               // pie de las piernas
+const y0=yb+4*LAY;               // pie de los postes
 const ytf=H+2;                   // marco superior
-const yc=ytf+6*LAY;              // eje de los cordones inferiores
-const XT=560, XC=-270, XR=92;    // punta de pluma, extremo de contrapluma, raíz de la pluma
-const APEX=V(0,yc+85,0);
-const hTop=x=>85-57*x/XT;
-const zwJ=x=>78-58*(x-XR)/(XT-XR);
-const XCW=-225, yPlate=yc-115;
-const FOOT=80, FEXT=8;
-const XF=bx+(FOOT+FEXT)/Math.SQRT2, XB=-XF, ZF=bz+(FOOT+FEXT)/Math.SQRT2;
-const CAP=59, G=9.81e-3, M_TROLLEY=6, M_PLATE=6, CABLE=70;
+const yc=ytf+8*LAY+1;            // eje de los rieles (7 capas)
+const XT=558, XC=-240, XR=120;   // punta de la pluma, extremo de la contrapluma, inicio de la pluma
+const DROOP=28;                  // la punta baja ~3 cm, como en las fotos
+const railY=x=>x<=XR?yc:yc-DROOP*(x-XR)/(XT-XR);
+const zwJ=x=>x<=XR?65:65-43*(x-XR)/(XT-XR);   // los rieles se juntan de 13 cm a 4.4 cm
+const XCW=-208, yPlate=yc-78;
+const XF=bx+SW/2, XB=-XF, ZF=bz+SW/2;
+const CAP=59, G=9.81e-3, M_TROLLEY=6, M_PLATE=5, CABLE=70, MCAP_RAIL=4200;
+const STX=255;                   // donde los puntales tocan la pluma
 
 /* ---------- Render ---------- */
 const stage=$('#stage');
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setClearColor(0x000000,0);
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
-renderer.setClearColor(0x000000,0);
 stage.appendChild(renderer.domElement);
 const labelR=new CSS2DRenderer(); labelR.domElement.className='labels'; stage.appendChild(labelR.domElement);
 
@@ -341,7 +425,6 @@ const camera=new THREE.PerspectiveCamera(32,1,0.01,20);
 const controls=new OrbitControls(camera,renderer.domElement);
 controls.enableDamping=true; controls.dampingFactor=0.08;
 controls.minDistance=0.22; controls.maxDistance=3.4; controls.maxPolarAngle=Math.PI*0.6; controls.autoRotateSpeed=0.7;
-
 scene.add(new THREE.HemisphereLight(0xffffff,0x9aa0a6,0.45));
 const sun=new THREE.DirectionalLight(0xfff3e2,2.5);
 sun.position.set(0.7,1.5,0.9); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048);
@@ -371,8 +454,8 @@ function makeWood(seed,tone){
 const tones=[[226,192,145],[214,178,128],[231,201,158],[207,169,119]];
 const woodTex=[];
 tones.forEach((t,i)=>{ const a=makeWood(i*7+3,t); woodTex.push(a); const b=a.clone(); b.offset.set(0.37,0.5); b.needsUpdate=true; woodTex.push(b); });
-const woodMats=woodTex.map(t=>new THREE.MeshStandardMaterial({map:t,roughness:.78,metalness:0,envMapIntensity:.6}));
-const woodHL=woodTex.map(t=>new THREE.MeshStandardMaterial({map:t,roughness:.7,metalness:0,emissive:new THREE.Color(0xF2B705),emissiveIntensity:.32,envMapIntensity:.6}));
+const woodMats=woodTex.map(t=>new THREE.MeshStandardMaterial({map:t,bumpMap:t,bumpScale:1.2,roughness:.74,metalness:0,envMapIntensity:.6}));
+const woodHL=woodTex.map(t=>new THREE.MeshStandardMaterial({map:t,bumpMap:t,bumpScale:1.2,roughness:.7,metalness:0,emissive:new THREE.Color(0xF2B705),emissiveIntensity:.32,envMapIntensity:.6}));
 const wireMat=new THREE.MeshStandardMaterial({color:0xbfc4c9,metalness:1,roughness:.32});
 const threadMat=new THREE.MeshStandardMaterial({color:0xE4DA1F,roughness:.55,emissive:0x3a3500,emissiveIntensity:.4});
 const steelMat=new THREE.MeshStandardMaterial({color:0x9ba1a7,metalness:.92,roughness:.33});
@@ -380,7 +463,7 @@ const darkMat=new THREE.MeshStandardMaterial({color:0x2a2e33,metalness:.3,roughn
 const coinMat=new THREE.MeshStandardMaterial({color:0xC8A24A,metalness:.95,roughness:.3});
 const trolleyMat=new THREE.MeshStandardMaterial({color:0xF2B705,roughness:.45,metalness:.1});
 const legMat=new THREE.MeshStandardMaterial({color:0x8a9096,metalness:.8,roughness:.4});
-const tableMat=new THREE.MeshStandardMaterial({color:0xf1f1ee,roughness:.5,metalness:0});
+const tableMat=new THREE.MeshStandardMaterial({color:0xf1f1ee,roughness:.38,metalness:0,envMapIntensity:.5});
 const bpFill=new THREE.MeshBasicMaterial({color:0x11446C,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
 const bpHL=new THREE.MeshBasicMaterial({color:0xF2B705,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1});
 const bpLine=new THREE.LineBasicMaterial({color:0xD3E8FF,transparent:true,opacity:.9});
@@ -454,12 +537,12 @@ const world=new THREE.Group(); world.scale.setScalar(0.001); scene.add(world);
 const tiltG=new THREE.Group(), inner=new THREE.Group(); world.add(tiltG); tiltG.add(inner);
 
 const PARTS={
-  pluma:{name:'Pluma',desc:'Viga de sección triangular: dos cordones inferiores en escalera y un cordón superior que baja hacia la punta. Se estrecha de 16 a 4 cm de ancho.',pivot:V(XR,yc,0),explode:V(120,230,0)},
-  contrapluma:{name:'Contrapluma',desc:'Brazo trasero corto. Sostiene la charola del lastre y está atirantado con hilo hasta la cúspide.',explode:V(-120,230,0)},
-  cabeza:{name:'Cabeza',desc:'Marco superior que recibe la pluma y la contrapluma, más la cúspide piramidal donde se amarran los tirantes.',explode:V(0,150,0)},
-  torre:{name:'Torre',desc:'Cuatro piernas de tres capas en tronco de pirámide, con cruces en X en cada cara y un anillo intermedio.',explode:V(0,70,0)},
-  base:{name:'Base',desc:'Marco perimetral de tres capas, cruz central y cuatro patas en diagonal que alejan el borde de vuelco.',explode:V(0,0,0)},
-  lastre:{name:'Lastre',desc:'Charola de cartón colgada con hilo amarillo. Se carga con monedas para equilibrar el momento de la carga.',explode:V(-120,150,0)},
+  pluma:{name:'Pluma',desc:'Dos rieles de siete palitos encimados y escalonados, con travesaños encima como escalera. Se juntan de 13 a 4.4 cm hacia la punta y bajan un poco, igual que en la grúa real.',pivot:V(XR,yc,0),explode:V(120,200,0)},
+  contrapluma:{name:'Contrapluma',desc:'Los mismos rieles siguen 24 cm hacia atrás. En la punta cuelga la charola del lastre.',explode:V(-120,200,0)},
+  cabeza:{name:'Marco superior',desc:'Marco de 41 × 22 cm, más largo que la base, que recibe los rieles de la pluma y la contrapluma.',explode:V(0,130,0)},
+  torre:{name:'Torre',desc:'Cuatro postes de tres capas con una X en cada cara, un anillo a media altura, diagonales que sostienen el marco superior y dos puntales largos que cargan la pluma.',explode:V(0,60,0)},
+  base:{name:'Base',desc:'Marco cuadrado de 26 × 26 cm, de tres capas, con una cruz al centro.',explode:V(0,0,0)},
+  lastre:{name:'Lastre',desc:'Charola de cartón de 9 × 7 cm colgada con hilo amarillo. Se carga con monedas para equilibrar el momento de la carga.',explode:V(-120,130,0)},
 };
 const CARRO={name:'Carro y pesas',desc:'Agregado para la simulación: el carro recorre la pluma y cuelga pesas ranuradas de 100 g.'};
 for(const [id,p] of Object.entries(PARTS)){ p.id=id; p.pivot=p.pivot||V(); p.group=new THREE.Group(); p.group.position.copy(p.pivot); inner.add(p.group); p.count=0; p.mass=0; p.joints=0; p.sum=V(); }
@@ -476,12 +559,13 @@ function member(pid,A,B,o={}){
   az.normalize(); const ay=new THREE.Vector3().crossVectors(az,ax);
   const q=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(ax,ay,az));
   const a=A.clone().addScaledVector(ax,-ext), L=L0+2*ext;
-  const n=Math.max(1,Math.ceil(L/(SL-1))), p=L/n, variant=Math.floor(rand()*woodMats.length);
-  const info={part:pid,kind,A:A.clone().addScaledVector(az,off),B:B.clone().addScaledVector(az,off),ax,ay,az};
+  const n=L<=SL?1:2, variant=Math.floor(rand()*woodMats.length);
+  const info={part:pid,kind,layers,A:A.clone().addScaledVector(az,off),B:B.clone().addScaledVector(az,off),ax,ay,az};
   for(let k=0;k<layers;k++){
     const zo=off+(k-(layers-1)/2)*LAY, segs=[];
-    if(n===1||k%2===0) for(let i=0;i<n;i++) segs.push([i*p,(i+1)*p]);
-    else { segs.push([0,p/2]); for(let i=0;i<n-1;i++) segs.push([p/2+i*p,p/2+(i+1)*p]); segs.push([L-p/2,L]); }
+    // palitos completos, cada capa corrida medio palito: así se ve el escalonado de las fotos
+    if(L<=SL) segs.push([0,L]);
+    else for(let s=-(k%2)*SL/2-(k%3)*12;s<L;s+=SL){ const a=Math.max(0,s), b=Math.min(L,s+SL); if(b-a>=26) segs.push([a,b]); }
     for(const [s0,s1] of segs){
       const len=s1-s0-0.8, mid=(s0+s1)/2+(n===1?(rand()-.5)*3:0);
       const mesh=new THREE.Mesh(stickGeo(len),woodMats[variant]);
@@ -504,8 +588,9 @@ function jointOn(info,t,type='wire'){
   const f=rand()<.5?-1:1;
   m.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(info.ay.clone().multiplyScalar(f),info.az.clone().multiplyScalar(f),info.ax));
   if(type==='wire') m.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(V(0,0,1),(rand()-.5)*.6));
+  const sy=Math.max(1,(info.layers*LAY+1.5)/8.8); m.scale.set(1,sy,1);
   m.castShadow=true; addTo(info.part,m,P);
-  m.userData={type,part:info.part}; joints.push(m); PARTS[info.part].joints++;
+  m.userData={type,part:info.part,sy}; joints.push(m); PARTS[info.part].joints++;
   return m;
 }
 function segTo(mesh,A,B,r){
@@ -524,28 +609,25 @@ function crossT(p1,p2,p3,p4){
   return (b*e-c*d)/(a*c-b*b);
 }
 
-/* ---- Base ---- */
+/* ---- Base: marco de 26 × 26 cm ---- */
 const corners=[[-1,-1],[1,-1],[1,1],[-1,1]];
 {
-  const f=member('base',V(-bx,yb,-bz),V(bx,yb,-bz),{layers:3,kind:'base',ext:12});
-  const k=member('base',V(-bx,yb,bz),V(bx,yb,bz),{layers:3,kind:'base',ext:12});
-  member('base',V(-bx,yb+3*LAY,-bz),V(-bx,yb+3*LAY,bz),{layers:3,kind:'base',ext:12});
-  member('base',V(bx,yb+3*LAY,-bz),V(bx,yb+3*LAY,bz),{layers:3,kind:'base',ext:12});
+  const L3={layers:3,kind:'base',ext:12};
+  const f=member('base',V(-bx,yb,-bz),V(bx,yb,-bz),L3);
+  const k=member('base',V(-bx,yb,bz),V(bx,yb,bz),L3);
+  member('base',V(-bx,yb+3*LAY,-bz),V(-bx,yb+3*LAY,bz),L3);
+  member('base',V(bx,yb+3*LAY,-bz),V(bx,yb+3*LAY,bz),L3);
   const x1=member('base',V(-bx,yb+5.5*LAY,-bz),V(bx,yb+5.5*LAY,bz),{layers:2,kind:'base',ext:4});
   member('base',V(-bx,yb+7.5*LAY,bz),V(bx,yb+7.5*LAY,-bz),{layers:2,kind:'base',ext:4});
+  member('base',V(0,yb+9.5*LAY,-bz),V(0,yb+9.5*LAY,bz),{layers:1,kind:'base',ext:6});
   jointOn(f,0); jointOn(f,1); jointOn(k,0); jointOn(k,1); jointOn(x1,.5,'wrap');
-  for(const [sx,sz] of corners){
-    const dir=V(sx,0,sz).normalize(), c=V(sx*bx,LAY,sz*bz);
-    const ft=member('base',c.clone().addScaledVector(dir,-18),c.clone().addScaledVector(dir,FOOT),{layers:2,kind:'foot',ext:FEXT});
-    jointOn(ft,18/(18+FOOT));
-  }
 }
-/* ---- Torre ---- */
+/* ---- Torre: postes, cruces y diagonales que cargan el marco superior ---- */
 {
-  const C=(sx,sz,top)=>top?V(sx*tx,H,sz*tz):V(sx*bx,y0,sz*bz);
+  const C=(sx,sz,top)=>top?V(sx*bx,H,sz*tzT):V(sx*bx,y0,sz*bz);
   for(const [sx,sz] of corners){
     const l=member('torre',C(sx,sz,0),C(sx,sz,1),{layers:3,normal:V(sx,0,sz),kind:'leg',ext:6});
-    jointOn(l,.03); jointOn(l,.5,'wrap'); jointOn(l,.97);
+    jointOn(l,.03); jointOn(l,.45,'wrap'); jointOn(l,.97);
   }
   const faces=[[[-1,-1],[1,-1],V(0,0,-1)],[[1,-1],[1,1],V(1,0,0)],[[1,1],[-1,1],V(0,0,1)],[[-1,1],[-1,-1],V(-1,0,0)]];
   for(const [[a0,c0],[a1,c1],out] of faces){
@@ -553,61 +635,66 @@ const corners=[[-1,-1],[1,-1],[1,1],[-1,1]];
     const n=new THREE.Vector3().crossVectors(b1.clone().sub(b0),t0.clone().sub(b0)).normalize(); if(n.dot(out)<0) n.negate();
     const d1=member('torre',b0,t1,{layers:2,normal:n,offset:3.5*LAY,kind:'brace',ext:4});
     const d2=member('torre',b1,t0,{layers:2,normal:n,offset:5.5*LAY,kind:'brace',ext:4});
-    member('torre',b0.clone().lerp(t0,.5),b1.clone().lerp(t1,.5),{layers:2,normal:n,offset:-3.5*LAY,kind:'ring',ext:10});
-    jointOn(d1,crossT(b0,t1,b1,t0),'wrap');
+    const r=member('torre',b0.clone().lerp(t0,.45),b1.clone().lerp(t1,.45),{layers:2,normal:n,offset:-3.5*LAY,kind:'ring',ext:10});
+    jointOn(d1,crossT(b0,t1,b1,t0),'wrap'); jointOn(r,0,'wrap'); jointOn(r,1);
     jointOn(d1,.05); jointOn(d1,.95); jointOn(d2,.05); jointOn(d2,.95);
   }
-}
-/* ---- Cabeza ---- */
-{
-  const f=member('cabeza',V(-tx,ytf,-tz),V(tx,ytf,-tz),{layers:3,kind:'topframe',ext:14});
-  const k=member('cabeza',V(-tx,ytf,tz),V(tx,ytf,tz),{layers:3,kind:'topframe',ext:14});
-  member('cabeza',V(-tx,ytf+3*LAY,-tz),V(-tx,ytf+3*LAY,tz),{layers:3,kind:'topframe',ext:16});
-  member('cabeza',V(tx,ytf+3*LAY,-tz),V(tx,ytf+3*LAY,tz),{layers:3,kind:'topframe',ext:16});
-  jointOn(f,0); jointOn(f,1); jointOn(k,0); jointOn(k,1);
-  const yf=yc+2.5*LAY;
-  for(const sz of [-1,1]){ const r=member('cabeza',V(-40,yf,sz*60),V(40,yf,sz*60),{layers:2,kind:'cat',ext:12}); jointOn(r,0); jointOn(r,1); }
-  let last;
-  for(const [sx,sz] of corners){ last=member('cabeza',V(sx*40,yf+LAY,sz*60),APEX,{layers:2,normal:V(sx,.4,sz),kind:'cat',ext:6}); }
-  jointOn(last,.96,'wrap'); jointOn(last,.9);
-}
-/* ---- Pluma ---- */
-{
-  const xi=i=>XR+i*(XT-XR)/6;
-  const chB=[-1,1].map(s=>member('pluma',V(40,yc,s*zwJ(40)),V(XT,yc,s*zwJ(XT)),{layers:3,kind:'chordB',ext:10}));
-  const chT=member('pluma',V(0,yc+hTop(0),0),V(XT,yc+hTop(XT),0),{layers:3,kind:'chordT',ext:10});
-  for(let i=0;i<=6;i++){
-    const x=xi(i), zw=zwJ(x), yT=yc+hTop(x);
-    member('pluma',V(x,yc-2.5*LAY,-zw),V(x,yc-2.5*LAY,zw),{layers:2,kind:'rung',ext:10});
-    for(const s of [-1,1]){
-      const B0=V(x,yc,s*zw), T0=V(x,yT,0);
-      const dB=V(XT-40,0,s*(zwJ(XT)-zwJ(40))).normalize(), dP=T0.clone().sub(B0).normalize();
-      const n=new THREE.Vector3().crossVectors(dB,dP).normalize(); if(n.z*s<0) n.negate();
-      const post=member('pluma',B0,T0,{layers:2,normal:n,offset:2.8*LAY,kind:'web',ext:6});
-      jointOn(post,.04);
-      if(i<6){ const x2=xi(i+1); const d=member('pluma',B0,V(x2,yc+hTop(x2),0),{layers:2,normal:n,offset:4.8*LAY,kind:'web',ext:5}); jointOn(d,.95); }
-      jointOn(chB[s<0?0:1],(x-40)/(XT-40));
-    }
-    jointOn(chT,x/XT,i%2?'wire':'wrap');
+  // diagonales que sostienen los extremos del marco superior (más largo que la base)
+  for(const [sx,sz] of corners){
+    const A=C(sx,sz,0), B=V(sx*(XTOP-8),H-4,sz*tzT);
+    const d=member('torre',A,B,{layers:2,normal:V(0,0,sz),offset:3.5*LAY,kind:'brace',ext:6});
+    jointOn(d,.06); jointOn(d,.95);
   }
+  // puntales largos: de la base hasta abajo de la pluma
+  const top=s=>V(STX,railY(STX)-3.5*LAY-7,s*(zwJ(STX)+4));
+  const st=[-1,1].map(s=>{ const m=member('torre',V(bx,y0-2,s*bz),top(s),{layers:3,normal:V(0,0,s),kind:'strut',ext:6}); jointOn(m,.05); jointOn(m,.96,'wrap'); return m; });
+  const tie=member('torre',V(bx,y0-2,-bz).lerp(top(-1),.3),V(bx,y0-2,bz).lerp(top(1),.3),{layers:2,normal:V(1,0,0),offset:3*LAY,kind:'brace',ext:12});
+  jointOn(tie,0); jointOn(tie,1);
+}
+/* ---- Marco superior: 41 × 22 cm ---- */
+{
+  const f=member('cabeza',V(-XTOP,ytf,-tzT),V(XTOP,ytf,-tzT),{layers:3,kind:'topframe',ext:10});
+  const k=member('cabeza',V(-XTOP,ytf,tzT),V(XTOP,ytf,tzT),{layers:3,kind:'topframe',ext:10});
+  for(const x of [-XTOP+6,-bx,bx,XTOP-6]){
+    const c=member('cabeza',V(x,ytf+3*LAY,-tzT),V(x,ytf+3*LAY,tzT),{layers:3,kind:'topframe',ext:12});
+    jointOn(c,0); jointOn(c,1);
+  }
+  jointOn(f,.5,'wrap'); jointOn(k,.5,'wrap');
+}
+/* ---- Pluma: dos rieles escalonados con travesaños encima ---- */
+{
+  const rails=[-1,1].map(s=>member('pluma',V(XR,railY(XR),s*zwJ(XR)),V(XT,railY(XT),s*zwJ(XT)),{layers:7,kind:'rail',ext:5}));
+  rails.forEach(r=>jointOn(r,0,'wrap'));
+  const xs=[]; for(let x=XR+12;x<XT-30;x+=74) xs.push(x);
+  for(const x of xs){
+    const zw=zwJ(x), half=Math.max(52,Math.min(75,zw+42)), y=railY(x)+4.5*LAY+1.5;
+    const r=member('pluma',V(x,y,-half),V(x,y,half),{layers:2,kind:'rung',ext:0});
+    jointOn(r,(half-zw)/(2*half)); jointOn(r,(half+zw)/(2*half));
+  }
+  const tip=member('pluma',V(XT-4,railY(XT),-zwJ(XT)-10),V(XT-4,railY(XT),zwJ(XT)+10),{layers:7,kind:'rung',ext:4});
+  jointOn(tip,0); jointOn(tip,1);
+  const sy=x=>railY(x)+6*LAY+3;
+  member('pluma',V(XR+30,sy(XR+30),0),V(XR+300,sy(XR+300),0),{layers:1,kind:'rung',ext:6});
 }
 /* ---- Contrapluma ---- */
 {
-  const cc=[-1,1].map(s=>member('contrapluma',V(XC,yc,s*60),V(XR,yc,s*60),{layers:3,kind:'cchord',ext:10}));
-  for(const x of [XC+8,-205,-140]){ const r=member('contrapluma',V(x,yc-2.5*LAY,-60),V(x,yc-2.5*LAY,60),{layers:2,kind:'crung',ext:10}); jointOn(r,0); jointOn(r,1); }
-  cc.forEach(c=>{ jointOn(c,(XR-30-XC)/(XR-XC)); jointOn(c,(XR+10-XC)/(XR-XC),'wrap'); });
-  for(const s of [-1,1]){ for(const dz of [-1.2,1.2]){ thread('contrapluma',APEX.clone().add(V(0,-2,dz)),V(XC+6,yc+1.5*LAY,s*60+dz)); } }
+  const cr=[-1,1].map(s=>member('contrapluma',V(XC,yc,s*zwJ(XR)),V(XR,yc,s*zwJ(XR)),{layers:7,kind:'crail',ext:5}));
+  for(const x of [XC+10,-172,-106,-40,26,88]){
+    const y=yc+4.5*LAY+1.5, r=member('contrapluma',V(x,y,-75),V(x,y,75),{layers:2,kind:'crung',ext:0});
+    jointOn(r,(75-zwJ(XR))/150); jointOn(r,(75+zwJ(XR))/150);
+  }
+  cr.forEach(r=>{ jointOn(r,(-XTOP-XC)/(XR-XC),'wrap'); jointOn(r,(XTOP-XC)/(XR-XC),'wrap'); });
 }
-/* ---- Lastre ---- */
-const plate=new THREE.Mesh(new THREE.BoxGeometry(100,2.5,90),cardMat);
+/* ---- Lastre: charola de cartón de 9 × 7 cm colgada con hilo ---- */
+const plate=new THREE.Mesh(new THREE.BoxGeometry(90,2.5,70),cardMat);
 {
   plate.castShadow=plate.receiveShadow=true; plate.userData={part:'lastre',kind:'plate'};
   addTo('lastre',plate,V(XCW,yPlate,0)); pickables.push(plate);
   PARTS.lastre.mass+=M_PLATE; PARTS.lastre.sum.addScaledVector(V(XCW,yPlate,0),M_PLATE);
-  const tops=[[-262,-60],[-188,-60],[-262,60],[-188,60]], bots=[[-270,-40],[-180,-40],[-270,40],[-180,40]];
-  tops.forEach(([x,z],i)=>thread('lastre',V(x,yc-3*LAY,z),V(bots[i][0],yPlate+1.3,bots[i][1])));
-  thread('lastre',V(-272,yPlate+1.5,-42),V(-178,yPlate+1.5,42),.35);
-  thread('lastre',V(-272,yPlate+1.5,42),V(-178,yPlate+1.5,-42),.35);
+  const zr=zwJ(XR), tops=[[XC+6,-zr],[XCW+40,-zr],[XC+6,zr],[XCW+40,zr]], bots=[[XCW-40,-30],[XCW+40,-30],[XCW-40,30],[XCW+40,30]];
+  tops.forEach(([x,z],i)=>thread('lastre',V(x,yc-4*LAY,z),V(bots[i][0],yPlate+1.3,bots[i][1])));
+  thread('lastre',V(XCW-43,yPlate+1.5,-33),V(XCW+43,yPlate+1.5,33),.35);
+  thread('lastre',V(XCW-43,yPlate+1.5,33),V(XCW+43,yPlate+1.5,-33),.35);
 }
 const coinGeo=new THREE.CylinderGeometry(14,14,2.2,28);
 const coins=new THREE.InstancedMesh(coinGeo,coinMat,64); coins.count=0; coins.castShadow=true; coins.frustumCulled=false;
@@ -634,10 +721,10 @@ for(const p of Object.values(PARTS)){
 
 /* ---- Carro, cable y pesas ---- */
 const trolley=new THREE.Group(); PARTS.pluma.group.add(trolley);
-const carriage=new THREE.Mesh(new THREE.BoxGeometry(26,6,1),trolleyMat); carriage.position.y=2; carriage.castShadow=true;
-const brackets=[0,1].map(()=>{ const b=new THREE.Mesh(new THREE.BoxGeometry(22,12,1.2),trolleyMat); b.position.y=4; b.castShadow=true; return b; });
+const carriage=new THREE.Mesh(new THREE.BoxGeometry(26,6,1),trolleyMat); carriage.position.y=-1; carriage.castShadow=true;
+const brackets=[0,1].map(()=>{ const b=new THREE.Mesh(new THREE.BoxGeometry(22,8,1.2),trolleyMat); b.position.y=0; b.castShadow=true; return b; });
 const wheels=[0,1,2,3].map(()=>{ const w=new THREE.Mesh(new THREE.CylinderGeometry(4,4,3,20),darkMat); w.rotation.x=Math.PI/2; w.castShadow=true; return w; });
-const anchor=new THREE.Object3D(); anchor.position.y=-1;
+const anchor=new THREE.Object3D(); anchor.position.y=-4;
 trolley.add(carriage,...brackets,...wheels,anchor);
 [carriage,...brackets,...wheels].forEach(m=>{ m.userData={part:'carro'}; pickables.push(m); });
 
@@ -686,32 +773,32 @@ function dim(a,b,tick,text){
   dim(V(0,yT,0),V(bbox.max.x,yT,0),UP,'Alcance '+cm(bbox.max.x));
   dim(V(bbox.min.x,yT,0),V(0,yT,0),UP,'Contrapluma '+cm(-bbox.min.x));
   dim(V(bbox.min.x-30,0,0),V(bbox.min.x-30,bbox.max.y,0),V(1,0,0),'Altura '+cm(bbox.max.y));
-  dim(V(baseBox.max.x+28,1,baseBox.min.z),V(baseBox.max.x+28,1,baseBox.max.z),V(1,0,0),'Huella '+cm(baseBox.max.z-baseBox.min.z));
+  dim(V(XF+40,1,-ZF),V(XF+40,1,ZF),V(1,0,0),'Base '+cm(2*ZF)+' × '+cm(2*ZF));
+  dim(V(-XTOP-30,ytf,-tzT-SW/2),V(-XTOP-30,ytf,tzT+SW/2),V(1,0,0),'Ancho '+cm(2*tzT+SW));
 }
 
 /* ---------- Física ---------- */
-const state={x:420,load:250,cw:200,mode:'wood',explode:0,dims:false,cg:true};
-const DEF={x:420,load:250,cw:200};
-const KIND={chordT:'Cordón superior de la pluma',chordB:'Cordones inferiores de la pluma',web:'Diagonales de la pluma',rung:'Travesaños de la pluma',cat:'Cúspide de la cabeza',cchord:'Cordones de la contrapluma',crung:'Travesaños de la contrapluma',leg:'Piernas de la torre',brace:'Cruces de la torre',ring:'Anillo de la torre',topframe:'Marco superior',base:'Marco de la base',foot:'Patas de la base'};
+const state={x:420,load:0,cw:0,mode:'wood',explode:0,dims:false,cg:true};
+const DEF={x:420,load:0,cw:0};   // como en las fotos: sin pesas ni monedas
+const KIND={rail:'Rieles de la pluma',strut:'Puntales de la pluma',rung:'Travesaños de la pluma',crail:'Rieles de la contrapluma',crung:'Travesaños de la contrapluma',leg:'Postes de la torre',brace:'Diagonales de la torre',ring:'Anillo de la torre',topframe:'Marco superior',base:'Marco de la base'};
 function utilCtx(xL,mL,mC){
-  const ex=mL+M_TROLLEY;
+  const ex=mL>0?mL+M_TROLLEY:0;
   const Mj=x=>{ let s=0; for(const p of jibPts) if(p.x>x) s+=p.m*(p.x-x); if(xL>x) s+=ex*(xL-x); return s*G; };
   const Vj=x=>{ let s=0; for(const p of jibPts) if(p.x>x) s+=p.m; if(xL>x) s+=ex; return s*G; };
   const Mc=x=>{ let s=0; for(const p of ctrPts) if(p.x<x) s+=p.m*(x-p.x); if(XCW<x) s+=mC*(x-XCW); return s*G; };
   const Vc=x=>{ let s=0; for(const p of ctrPts) if(p.x<x) s+=p.m; if(XCW<x) s+=mC; return s*G; };
   let W=0,M0=0; for(const p of abovePts){ W+=p.m; M0+=p.m*p.x; }
   W+=ex+mC; M0+=ex*xL+mC*XCW;
-  return {Mj,Vj,Mc,Vc,Nleg:W*G/4+Math.abs(M0*G)/(2*216),catF:0};
+  return {Mj,Vj,Mc,Vc,Nleg:W*G/4+Math.abs(M0*G)/(2*2*bx)};
 }
 function forceOf(u,c){
   const x=u.x;
   switch(u.kind){
-    case 'chordT': return c.Mj(x)/hTop(Math.max(0,x));
-    case 'chordB': return c.Mj(x)/(2*hTop(x));
-    case 'web': return c.Vj(x)/1.2;
-    case 'rung': return c.Vj(x)*.3;
-    case 'cat': return c.Mj(XR)/hTop(XR)*.55;
-    case 'cchord': return c.Mc(x)/(2*Math.max(12,85*(x-XC)/(-XC)));
+    // rieles: palitos encimados sin pegar, trabajan casi por separado a flexión
+    case 'rail': return c.Mj(Math.max(x,STX))/(2*MCAP_RAIL)*CAP;
+    case 'strut': return c.Mj(XR)/(STX-XR)/2/.83;
+    case 'rung': return c.Vj(Math.max(x,XR))*.3;
+    case 'crail': return c.Mc(x)/(2*MCAP_RAIL)*CAP;
     case 'crung': return c.Vc(x)*.3;
     case 'leg': return c.Nleg;
     case 'brace': return c.Nleg*.4;
@@ -731,7 +818,7 @@ function evalUtil(xL,mL,mC,assign){
 }
 function physics(){
   const xL=state.x, mL=state.load, mC=state.cw;
-  const pts=statPts.concat([{x:XCW,y:yPlate+8,m:mC},{x:xL,y:yc,m:M_TROLLEY},{x:xL,y:yc-CABLE-40,m:mL,load:true}]);
+  const pts=statPts.concat([{x:XCW,y:yPlate+8,m:mC},{x:xL,y:yc,m:mL>0?M_TROLLEY:0},{x:xL,y:yc-CABLE-40,m:mL,load:true}]);
   let M=0,Mx=0,My=0,Rf=0,Of=0,Rb=0,Ob=0,S=0;
   for(const p of pts){
     M+=p.m; Mx+=p.m*p.x; My+=p.m*p.y;
@@ -748,18 +835,18 @@ function physics(){
 }
 
 /* ---------- UI ---------- */
-const anim={x:state.x,vx:0,phi:0,omega:0,tilt:0,vtilt:0,tiltTarget:0,pivot:XF,sag:0,sagTarget:0,explode:reduceMotion?0:1};
+const anim={x:state.x,vx:0,phi:0,omega:0,tilt:0,vtilt:0,tiltTarget:0,pivot:XF,sag:0,sagTarget:0,explode:0};
 let P=null;
 const nm=v=>(v*9.81e-6).toFixed(2)+' N·m';
 function setFill(inp){ const p=(inp.value-inp.min)/(inp.max-inp.min)*100; inp.style.setProperty('--p',p+'%'); }
 function setCoins(g){
   const n=Math.min(64,Math.round(g/10)); coins.count=n;
-  const order=[4,1,7,3,5,0,2,6,8], m4=new THREE.Matrix4(), q=new THREE.Quaternion(), s=V(1,1,1);
+  const order=[1,4,0,3,2,5], m4=new THREE.Matrix4(), q=new THREE.Quaternion(), s=V(1,1,1);
   for(let i=0;i<n;i++){
-    const st=order[i%9], lv=Math.floor(i/9), gx=(st%3)-1, gz=Math.floor(st/3)-1;
+    const st=order[i%6], lv=Math.floor(i/6), gx=(st%3)-1, gz=Math.floor(st/3)-.5;
     const r=mulberry32(i*31+7);
     q.setFromAxisAngle(UP,r()*6.28);
-    m4.compose(V(XCW+gx*31+(r()-.5)*1.5,yPlate+1.25+1.15+lv*2.3,gz*27+(r()-.5)*1.5),q,s);
+    m4.compose(V(XCW+gx*28+(r()-.5)*1.5,yPlate+1.25+1.15+lv*2.3,gz*31+(r()-.5)*1.5),q,s);
     coins.setMatrixAt(i,m4);
   }
   coins.instanceMatrix.needsUpdate=true;
@@ -777,6 +864,7 @@ function setLoadVisual(m){
   loadEl.textContent=m>0?m+' g':'gancho vacío';
   loadLabel.position.set(42,bottom/2,0);
 }
+let lastState='ok';
 function update(){
   P=physics();
   const fs=Math.min(P.FSf,P.FSb), over=P.cur.u>1;
@@ -784,11 +872,12 @@ function update(){
   if(fs<1){ st='bad'; txt=P.FSf<1?'Vuelca hacia la punta':'Vuelca hacia atrás'; }
   else if(over){ st='bad'; txt='Sobrecarga estructural'; }
   else if(fs<1.5||P.cur.u>.8){ st='warn'; txt='Al límite'; }
+  lastState=st;
   const cs=$('#c-status'); cs.dataset.state=st; cs.textContent=txt+(isFinite(fs)?' · FS '+fs.toFixed(2):'');
-  $('#gauge').dataset.state=st; $('#readout').dataset.state=st;
+  for(const id of ['#gauge','#readout','#chart-box']) $(id).dataset.state=st;
   $('#o-x').textContent=cm(state.x);
-  $('#o-load').textContent=state.load+' g';
-  $('#o-cw').textContent=state.cw+' g · '+Math.round(state.cw/10)+' monedas';
+  $('#o-load').textContent=state.load?state.load+' g':'sin carga';
+  $('#o-cw').textContent=state.cw?state.cw+' g · '+Math.round(state.cw/10)+' monedas':'charola vacía';
   const fwd=P.FSf<=P.FSb;
   $('#o-mo').textContent=nm(fwd?P.Of:P.Ob);
   $('#o-mr').textContent=nm(fwd?P.Rf:P.Rb);
@@ -808,7 +897,57 @@ function update(){
   cgBall.position.set(P.xcg,P.ycg,0); cgRing.position.set(P.xcg,1.5,0); cgLabel.position.set(P.xcg+16,P.ycg+14,0);
   cgLine.geometry.setFromPoints([V(P.xcg,P.ycg,0),V(P.xcg,1,0)]); cgLine.computeLineDistances();
   setCoins(state.cw); setLoadVisual(state.load);
+  $('#o-chart').textContent='con '+state.cw+' g de lastre';
+  if(chartCw!==state.cw) scheduleChart(); else drawChartMarker();
   if(state.mode==='stress') applyMaterials();
+}
+
+/* ---- Tabla de cargas ---- */
+const CH={l:44,r:312,t:10,b:136,x0:130,x1:520,y1:1500};
+const chx=x=>CH.l+(x-CH.x0)/(CH.x1-CH.x0)*(CH.r-CH.l);
+const chy=g=>CH.b-Math.min(g,CH.y1*1.1)/CH.y1*(CH.b-CH.t);
+function tipLimit(x,mC){
+  if(x<=XF) return Infinity;
+  let S=0; for(const p of statPts) S+=p.m*(XF-p.x);
+  S+=mC*(XF-XCW)+M_TROLLEY*(XF-x);
+  return Math.max(0,S/(x-XF));
+}
+function structLimit(x,mC){
+  const u0=evalUtil(x,0,mC,false).u, u1=evalUtil(x,1000,mC,false).u, s=(u1-u0)/1000;
+  return s>1e-9?Math.max(0,(1-u0)/s):Infinity;
+}
+let chartCw=null, chartJob=0;
+function scheduleChart(){ cancelAnimationFrame(chartJob); chartJob=requestAnimationFrame(drawChart); }
+function drawChart(){
+  chartCw=state.cw;
+  const tip=[],str=[],safe=[];
+  for(let x=CH.x0;x<=CH.x1;x+=10){ const a=tipLimit(x,state.cw), b=structLimit(x,state.cw); tip.push([x,a]); str.push([x,b]); safe.push([x,Math.min(a,b)]); }
+  const path=arr=>arr.map(([x,g],i)=>(i?'L':'M')+chx(x).toFixed(1)+' '+chy(isFinite(g)?g:CH.y1*1.1).toFixed(1)).join(' ');
+  const area=path(safe)+` L${chx(CH.x1)} ${CH.b} L${chx(CH.x0)} ${CH.b} Z`;
+  const yt=[0,500,1000,1500].map(g=>`<line class="gl" x1="${CH.l}" x2="${CH.r}" y1="${chy(g)}" y2="${chy(g)}"/><text class="tk" x="${CH.l-6}" y="${chy(g)+3}" text-anchor="end">${g?(g/1000).toFixed(1)+' kg':'0'}</text>`).join('');
+  const xt=[150,250,350,450,520].map(x=>`<line class="gl" x1="${chx(x)}" x2="${chx(x)}" y1="${CH.t}" y2="${CH.b}"/><text class="tk" x="${chx(x)}" y="${CH.b+13}" text-anchor="middle">${x/10}</text>`).join('');
+  $('#chart').innerHTML=`<defs><clipPath id="chclip"><rect x="${CH.l}" y="${CH.t}" width="${CH.r-CH.l}" height="${CH.b-CH.t}"/></clipPath></defs>${yt}${xt}
+    <g clip-path="url(#chclip)"><path class="area" d="${area}"/><path class="ln-tip" d="${path(tip)}"/><path class="ln-str" d="${path(str)}"/></g>
+    <g id="ch-mark"></g><text class="ax" x="${(CH.l+CH.r)/2}" y="${CH.b+28}" text-anchor="middle">Radio del carro (cm)</text>`;
+  drawChartMarker();
+}
+function drawChartMarker(){
+  const m=$('#ch-mark'); if(!m) return;
+  const x=chx(state.x), y=chy(state.load);
+  m.innerHTML=`<line class="mk-h" x1="${CH.l}" x2="${x}" y1="${y}" y2="${y}"/><line class="mk-h" x1="${x}" x2="${x}" y1="${y}" y2="${CH.b}"/><circle class="mk" cx="${x}" cy="${y}" r="5.5"/>`;
+}
+{
+  const svg=$('#chart'); let drag=false;
+  const setFrom=e=>{
+    const r=svg.getBoundingClientRect(), px=(e.clientX-r.left)/r.width*320, py=(e.clientY-r.top)/r.height*178;
+    state.x=Math.round(Math.min(CH.x1,Math.max(CH.x0,CH.x0+(px-CH.l)/(CH.r-CH.l)*(CH.x1-CH.x0)))/5)*5;
+    state.load=Math.round(Math.min(1500,Math.max(0,(CH.b-py)/(CH.b-CH.t)*CH.y1))/10)*10;
+    syncSliders(); update();
+  };
+  svg.addEventListener('pointerdown',e=>{ drag=true; svg.setPointerCapture(e.pointerId); setFrom(e); });
+  svg.addEventListener('pointermove',e=>{ if(drag) setFrom(e); });
+  svg.addEventListener('pointerup',()=>{ drag=false; });
+  svg.addEventListener('pointercancel',()=>{ drag=false; });
 }
 
 /* ---- Modos de vista y resaltado ---- */
@@ -824,7 +963,7 @@ function applyMaterials(){
   }
   for(const j of joints){
     j.material=mode==='bp'?bpJoint:mode==='xray'?(j.userData.type==='wire'?xrayWire:xrayThread):(j.userData.type==='wire'?wireMat:threadMat);
-    j.scale.setScalar(mode==='xray'?1.5:1);
+    const k=mode==='xray'?1.5:1; j.scale.set(k,k*(j.userData.sy||1),k);
   }
   for(const t of threads) t.material=mode==='bp'?bpJoint:mode==='xray'?xrayThread:threadMat;
   plate.material=mode==='bp'?(selPart==='lastre'||hoverPart==='lastre'?bpHL:bpFill):mode==='xray'?xrayMat:cardMat;
@@ -838,37 +977,48 @@ function applyMaterials(){
   $('#legend').hidden=mode!=='stress';
   $('#xlegend').hidden=mode!=='xray';
 }
+function setMode(m){
+  state.mode=m; $$('.seg button').forEach(x=>x.setAttribute('aria-checked',x.dataset.mode===m));
+  if(m==='stress') evalUtil(state.x,state.load,state.cw,true);
+  applyMaterials();
+}
 
 /* ---------- Cámara ---------- */
 let tween=null, offX=0, offY=0, visW=1, visH=1, curView='3d', userMoved=false;
 controls.addEventListener('start',()=>{ userMoved=true; tween=null; });
 const VIEWS={'3d':{dir:V(.62,.36,.68),d:1.05},lateral:{dir:V(0,.06,1),d:1.2},frente:{dir:V(1,.14,.0001),d:1.0},planta:{dir:V(.0001,1,.0002),d:1.2}};
+const isPhone=()=>innerWidth<=860;
 function viewPose(name){
   const v=VIEWS[name], T=name==='planta'?V(.14,0.05,0):V(.14,.14,0);
-  const phone=innerWidth<=860;
-  const asp=Math.min(visW/Math.max(1,visH),visW/Math.max(1,stage.clientHeight)*1.1), need={frente:.5,'3d':phone?.95:.72,planta:.92,lateral:.92}[name];
+  const asp=Math.min(visW/Math.max(1,visH),visW/Math.max(1,stage.clientHeight)*1.1), need={frente:.55,'3d':1,planta:1,lateral:1}[name];
   const d=Math.max(v.d,need/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*asp)*1.08);
   return {pos:T.clone().addScaledVector(v.dir.clone().normalize(),d),target:T};
 }
+function flyToPose(pos,target,dur=1.1){
+  tween={p0:camera.position.clone(),t0:controls.target.clone(),p1:pos,t1:target,t:reduceMotion?dur:0,dur};
+}
 function flyTo(name,dur=1.1){
-  const p=viewPose(name);
-  tween={p0:camera.position.clone(),t0:controls.target.clone(),p1:p.pos,t1:p.target,t:reduceMotion?dur:0,dur};
+  const p=viewPose(name); flyToPose(p.pos,p.target,dur);
   curView=name; userMoved=false;
   $$('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===name));
 }
 function resize(){
-  const w=stage.clientWidth, h=stage.clientHeight, phone=innerWidth<=860;
+  const w=stage.clientWidth, h=stage.clientHeight, phone=isPhone();
   const panel=$('#panel'), ph=panel.offsetHeight, pw=panel.offsetWidth;
   $('#app').style.setProperty('--sheet-h',(phone?ph:0)+'px');
-  offX=phone?0:(pw+16)/2; offY=phone?ph/2:0;
-  visW=phone?w:w-pw-32; visH=phone?h-ph:h;
+  // en celular, la grúa se centra en el hueco que dejan la marca arriba y el dock + hoja abajo
+  const topH=phone?$('.brand').offsetHeight+12:0, botH=phone?ph+$('#dock').offsetHeight+10:0;
+  offX=phone||!pw?0:(pw+16)/2; offY=phone?(botH-topH)/2:0;
+  visW=phone||!pw?w:w-pw-32; visH=phone?Math.max(120,h-botH-topH):h;
   renderer.setSize(w,h); labelR.setSize(w,h);
   camera.aspect=w/h; camera.fov=w/h<.8?46:32; camera.setViewOffset(w,h,offX,offY,w,h); camera.updateProjectionMatrix();
-  if(!userMoved&&started){ const p=viewPose(curView); if(tween){ tween.p1=p.pos; tween.t1=p.target; } else { camera.position.copy(p.pos); controls.target.copy(p.target); } }
+  if(tourI>=0) stepCamera(tourI,tween?tween.dur-tween.t:0);
+  else if(!userMoved&&started){ const p=viewPose(curView); if(tween){ tween.p1=p.pos; tween.t1=p.target; } else { camera.position.copy(p.pos); controls.target.copy(p.target); } }
 }
-let started=false;
+let started=false, tourI=-1;
 new ResizeObserver(resize).observe(stage);
 new ResizeObserver(resize).observe($('#panel'));
+new ResizeObserver(()=>{ if(isPhone()) resize(); }).observe($('#dock'));
 
 /* ---------- Picking ---------- */
 const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
@@ -886,7 +1036,7 @@ renderer.domElement.addEventListener('pointerleave',()=>{ pendingHover=null; if(
 renderer.domElement.addEventListener('pointerdown',e=>{ downAt=[e.clientX,e.clientY]; });
 renderer.domElement.addEventListener('pointerup',e=>{
   if(!downAt) return; const d=Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1]); downAt=null;
-  if(d>6) return;
+  if(d>6||tourI>=0) return;
   selectPart(pick(e),true);
 });
 function selectPart(id,fromScene){
@@ -907,27 +1057,22 @@ function setTab(t){
   $('#panel').classList.remove('collapsed');
 }
 $$('.tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
-$$('.seg button').forEach(b=>b.addEventListener('click',()=>{
-  state.mode=b.dataset.mode; $$('.seg button').forEach(x=>x.setAttribute('aria-checked',x===b));
-  if(state.mode==='stress') evalUtil(state.x,state.load,state.cw,true);
-  applyMaterials();
-}));
+$$('.seg button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 $$('.views button').forEach(b=>b.addEventListener('click',()=>flyTo(b.dataset.view)));
 $('#sheet-handle').addEventListener('click',()=>$('#panel').classList.toggle('collapsed'));
 const bind=(id,key,fn)=>{ const el=$(id); setFill(el); el.addEventListener('input',()=>{ state[key]=+el.value; setFill(el); fn?fn():update(); }); };
 bind('#rng-x','x'); bind('#rng-load','load'); bind('#rng-cw','cw');
 bind('#rng-explode','explode',()=>{ $('#o-explode').textContent=state.explode+' %'; });
 function setSlider(id,v){ const el=$(id); el.value=v; setFill(el); }
+function syncSliders(){ setSlider('#rng-x',state.x); setSlider('#rng-load',state.load); setSlider('#rng-cw',state.cw); setSlider('#rng-explode',state.explode); $('#o-explode').textContent=state.explode+' %'; }
 $('#btn-max').addEventListener('click',()=>{
   const lim=Math.min(P.maxTip,P.lim,1500);
-  state.load=Math.max(0,Math.floor(lim/10)*10); setSlider('#rng-load',state.load); update();
+  state.load=Math.max(0,Math.floor(lim/10)*10); syncSliders(); update();
 });
-$('#btn-reset').addEventListener('click',()=>{
-  Object.assign(state,DEF); setSlider('#rng-x',DEF.x); setSlider('#rng-load',DEF.load); setSlider('#rng-cw',DEF.cw); update();
-});
+$('#btn-reset').addEventListener('click',()=>{ Object.assign(state,DEF); syncSliders(); update(); });
 $('#tgl-dims').addEventListener('change',e=>{ state.dims=e.target.checked; });
 $('#tgl-cg').addEventListener('change',e=>{ state.cg=e.target.checked; });
-$('#tgl-rotate').addEventListener('change',e=>{ controls.autoRotate=e.target.checked; });
+$('#tgl-rotate').addEventListener('change',e=>{ controls.autoRotate=e.target.checked||presenting; });
 $('#tgl-table').addEventListener('change',()=>applyMaterials());
 
 function renderParts(){
@@ -946,7 +1091,7 @@ $('#bom').innerHTML=[
   ['Amarres de alambre',wires],
   ['Amarres de hilo',wraps],
   ['Hilo en tirantes y colgantes',cm(threadLen)],
-  ['Charola de cartón 10 × 9 cm','1'],
+  ['Charola de cartón 9 × 7 cm','1'],
   ['Masa de la estructura',Math.round(STRUCT_MASS)+' g'],
   ['Largo total',cm(bbox.max.x-bbox.min.x)],
   ['Altura total',cm(bbox.max.y)],
@@ -956,43 +1101,176 @@ $('#c-joints').textContent=joints.length;
 $('#c-mass').textContent=Math.round(STRUCT_MASS);
 $('#x-count').textContent=`${wires} amarres de alambre y ${wraps} de hilo`;
 
+/* ---------- Recorrido guiado ---------- */
+const TOUR=[
+  {t:'Nuestra grúa',view:'3d',x:()=>`Una grúa torre hecha con ${sticks.length} palitos jumbo, ${wires} amarres de alambre y ${wraps} de hilo. Mide ${cm(bbox.max.x-bbox.min.x)} de largo, ${cm(bbox.max.y)} de alto y ${cm(2*tzT+SW)} de ancho, y pesa unos ${Math.round(STRUCT_MASS)} g.`},
+  {t:'La base',part:'base',dir:[.55,.55,.85],d:.6,x:()=>`Marco cuadrado de 26 × 26 cm, de tres capas, con una cruz al centro. Su borde queda a ${cm(XF)} del eje de la torre: si el centro de gravedad pasa de ahí, la grúa se vuelca.`},
+  {t:'La torre',part:'torre',dir:[.85,.3,.75],d:.75,x:()=>'Cuatro postes de tres capas con una X en cada cara. Un triángulo no se deforma aunque lo empujen, por eso la torre no se ladea. Dos puntales largos salen de la base y sostienen la pluma por abajo.'},
+  {t:'Marco superior',part:'cabeza',dir:[.4,.6,.9],d:.62,x:()=>'Mide 41 × 22 cm: es más largo que la base, así que unas diagonales lo apoyan sobre los postes. Encima corren los dos rieles de la pluma y la contrapluma.'},
+  {t:'La pluma',part:'pluma',dir:[.25,.5,1],d:.85,x:()=>`Dos rieles de siete palitos encimados en escalón, con travesaños encima. Se juntan de ${cm(2*zwJ(XR))} a ${cm(2*zwJ(XT))} para que la punta pese menos y llegan a ${cm(XT)} del eje de la torre.`},
+  {t:'Contrapluma y lastre',part:'lastre',dir:[-.55,.35,.85],d:.55,x:()=>'Los rieles siguen 24 cm hacia atrás. De la punta cuelga la charola de cartón: las monedas del lastre empujan el centro de gravedad hacia atrás y compensan la carga.'},
+  {t:'Los amarres',view:'3d',mode:'xray',x:()=>`En rayos X se ven todas las uniones: ${wires} amarres de alambre que pasan por los hoyos de los palitos y ${wraps} amarres de hilo en los cruces. Son los puntos más débiles de la estructura.`},
+  {t:'Estabilidad',setup:{x:450,load:150,cw:250},target:[.12,.06,0],dir:[.3,.85,.75],d:1.05,x:()=>`El rombo amarillo es el centro de gravedad de todo el conjunto. Mientras quede sobre el cuadro marcado en la mesa, la grúa se sostiene. Con ${state.load} g a ${cm(state.x)} el factor de seguridad es ${Math.min(P.FSf,P.FSb).toFixed(2)}, y se caería con unos ${Math.round(P.maxTip)} g.`},
+  {t:'Esfuerzos',setup:{x:520,load:200,cw:400},view:'lateral',mode:'stress',x:()=>`Los colores muestran qué tanto trabaja cada palito. Con ${state.load} g cerca de la punta, la pieza más exigida es: ${(KIND[P.cur.kind]||'').toLowerCase()}, al ${Math.round(P.cur.u*100)} % de lo que estimamos que aguanta. Como los palitos sólo están amarrados y no pegados, cada uno trabaja casi solo.`},
+];
+$('#tour-bar').innerHTML=TOUR.map(()=>'<i></i>').join('');
+function startTour(){
+  if(presenting) setPresent(false);
+  state.explode=0; syncSliders(); finishBuild();
+  $('#tour').hidden=false; $('#app').classList.add('touring'); if(isPhone()) $('#panel').classList.add('collapsed');
+  showStep(0);
+}
+function endTour(){
+  $('#tour').hidden=true; $('#app').classList.remove('touring'); tourI=-1;
+  Object.assign(state,DEF); syncSliders(); update(); setMode('wood'); selectPart(null,false); flyTo('3d');
+}
+function stepCamera(i,dur){
+  const s=TOUR[i];
+  if(s.part||s.target){
+    const T=s.part?PARTS[s.part].centroid.clone().multiplyScalar(.001):V(...s.target);
+    const k=isPhone()?Math.max(1.3,1.1/Math.max(.35,visW/Math.max(1,visH))):1;
+    flyToPose(T.clone().addScaledVector(V(...s.dir).normalize(),s.d*k),T,Math.max(.01,dur));
+    userMoved=true;
+  } else { const p=viewPose(s.view); flyToPose(p.pos,p.target,Math.max(.01,dur)); curView=s.view; }
+}
+function showStep(i){
+  tourI=i; const s=TOUR[i];
+  if(s.setup){ Object.assign(state,s.setup); syncSliders(); update(); }
+  setMode(s.mode||'wood');
+  selPart=s.part||null; applyMaterials(); renderParts();
+  stepCamera(i,1.3);
+  $('#tour-n').textContent=String(i+1).padStart(2,'0')+' / '+String(TOUR.length).padStart(2,'0');
+  $('#tour-t').textContent=s.t; $('#tour-p').textContent=s.x();
+  $$('#tour-bar i').forEach((b,j)=>b.classList.toggle('on',j<=i));
+  $('#tour-prev').disabled=i===0;
+  $('#tour-next').textContent=i===TOUR.length-1?'Terminar':'Siguiente';
+}
+$('#t-tour').addEventListener('click',()=>tourI>=0?endTour():startTour());
+$('#tour-x').addEventListener('click',endTour);
+$('#tour-prev').addEventListener('click',()=>{ if(tourI>0) showStep(tourI-1); });
+$('#tour-next').addEventListener('click',()=>{ tourI<TOUR.length-1?showStep(tourI+1):endTour(); });
+
+/* ---------- Herramientas ---------- */
+let toastT=0;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2400); }
+let presenting=false;
+function setPresent(on){
+  presenting=on; $('#app').classList.toggle('present',on); $('#t-present').setAttribute('aria-pressed',on);
+  controls.autoRotate=on||$('#tgl-rotate').checked; resize();
+  if(on) toast('Modo presentación · P o Esc para salir');
+}
+$('#t-present').addEventListener('click',()=>setPresent(!presenting));
+const fsBtn=$('#t-full');
+if(!document.fullscreenEnabled) fsBtn.hidden=true;
+fsBtn.addEventListener('click',()=>{ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(()=>toast('Tu navegador no permite pantalla completa aquí')); });
+$('#t-build').addEventListener('click',()=>{ state.explode=0; syncSliders(); startBuild(); });
+$('#t-shot').addEventListener('click',capture);
+function capture(){
+  const w=stage.clientWidth, h=stage.clientHeight;
+  camera.clearViewOffset(); camera.updateProjectionMatrix();
+  renderNow();
+  const src=renderer.domElement, c=document.createElement('canvas'); c.width=src.width; c.height=src.height;
+  const g=c.getContext('2d'), bp=state.mode==='bp';
+  const gr=g.createRadialGradient(c.width*.4,c.height*.35,0,c.width*.4,c.height*.35,c.width*.75);
+  gr.addColorStop(0,cssVar(bp?'--bp-bg-2':'--bg-2')); gr.addColorStop(1,cssVar(bp?'--bp-bg':'--bg'));
+  g.fillStyle=gr; g.fillRect(0,0,c.width,c.height); g.drawImage(src,0,0);
+  camera.setViewOffset(w,h,offX,offY,w,h); camera.updateProjectionMatrix();
+  const s=Math.max(c.width,c.height*1.4)/1400, pad=40*s;
+  g.textBaseline='top'; g.fillStyle=cssVar('--ink-2');
+  g.font=`500 ${Math.round(15*s)}px "IBM Plex Mono", monospace`;
+  g.fillText('MODELO 3D · PALITOS JUMBO 150 × 18 × 2 MM',pad,pad);
+  g.fillStyle=cssVar('--ink'); g.font=`800 ${Math.round(64*s)}px "Big Shoulders Display", "Arial Narrow", sans-serif`;
+  g.fillText('GRÚA DE PALITOS',pad,pad+24*s);
+  g.save(); g.beginPath(); g.rect(pad,pad+96*s,150*s,7*s); g.clip();
+  for(let i=-2;i<24;i++){ g.fillStyle=i%2?cssVar('--ink'):cssVar('--accent'); g.beginPath(); const x=pad+i*9*s; g.moveTo(x,pad+103*s); g.lineTo(x+9*s,pad+103*s); g.lineTo(x+16*s,pad+96*s); g.lineTo(x+7*s,pad+96*s); g.fill(); }
+  g.restore();
+  g.fillStyle=cssVar('--ink-2'); g.font=`400 ${Math.round(15*s)}px "IBM Plex Mono", monospace`;
+  g.fillText(`${sticks.length} palitos · ${joints.length} amarres · ${Math.round(STRUCT_MASS)} g · carga ${state.load} g a ${cm(state.x)}`,pad,pad+116*s);
+  c.toBlob(b=>{
+    if(!b){ toast('No se pudo guardar la imagen'); return; }
+    const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='grua-de-palitos.png';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    toast('Imagen guardada');
+  },'image/png');
+}
+addEventListener('keydown',e=>{
+  if(e.target.closest('input,textarea,select')||e.ctrlKey||e.metaKey||e.altKey) return;
+  const views={'1':'3d','2':'lateral','3':'frente','4':'planta'};
+  if(views[e.key]) flyTo(views[e.key]);
+  else if(e.key==='p'||e.key==='P') setPresent(!presenting);
+  else if(e.key==='Escape'){ if(tourI>=0) endTour(); else if(presenting) setPresent(false); }
+  else if(tourI>=0&&e.key==='ArrowRight') $('#tour-next').click();
+  else if(tourI>=0&&e.key==='ArrowLeft') $('#tour-prev').click();
+});
+
+/* ---------- Armado pieza por pieza ---------- */
+const ORDER=['base','torre','cabeza','contrapluma','pluma','lastre'];
+const STEP=.42, DROP=.8, H0=.15;
+for(const p of Object.values(PARTS)) p.drop=0;
+let build=null;
+function startBuild(){
+  if(reduceMotion) return;
+  build={t:0};
+  for(const id of ORDER){ PARTS[id].group.visible=false; PARTS[id].drop=1; }
+}
+function finishBuild(){
+  build=null; trolley.visible=loadG.visible=cable.visible=true;
+  for(const id of ORDER){ PARTS[id].group.visible=true; PARTS[id].drop=0; }
+}
+const easeOutBack=k=>{ const c1=.7,c3=c1+1; return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2); };
+
 /* ---------- Tema ---------- */
 function applyTheme(){
   tableMat.color.set(cssVar('--scene-table'));
   dimMat.color.set(cssVar('--scene-dim'));
   const acc=cssVar('--accent'); cgMat.color.set(acc); cgLineMat.color.set(acc);
-  if(P) update();
+  if(P){ update(); drawChart(); }
 }
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
 new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 
 /* ---------- Bucle ---------- */
+function renderNow(){ renderer.render(scene,camera); }
 const tmp=V(), easeIO=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
-let last=performance.now(), first=true;
+let last=performance.now();
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000); last=now;
   // carro con resorte + péndulo
   const k=40, acc=k*(state.x-anim.x)-2*Math.sqrt(k)*anim.vx; anim.vx+=acc*dt; anim.x+=anim.vx*dt;
   if(!reduceMotion){ const n=4,h=dt/n; for(let i=0;i<n;i++){ const a=-(9810/CABLE)*Math.sin(anim.phi)-(acc/CABLE)*Math.cos(anim.phi)-1.6*anim.omega; anim.omega+=a*h; anim.phi+=anim.omega*h; } }
+  // armado
+  let building=false;
+  if(build){
+    build.t+=dt; building=true;
+    ORDER.forEach((id,i)=>{
+      const p=PARTS[id], kk=(build.t-H0-i*STEP)/DROP;
+      p.group.visible=kk>0; p.drop=kk<=0?1:kk>=1?0:1-easeOutBack(kk);
+      p.labelObj.visible=kk>0&&kk<1.5;
+    });
+    const end=H0+(ORDER.length-1)*STEP+DROP;
+    trolley.visible=loadG.visible=cable.visible=build.t>end;
+    if(build.t>end+.25) finishBuild();
+  }
   // explosión
   const target=state.explode/100;
-  anim.explode+=(target-anim.explode)*Math.min(1,dt*(first?2.2:7));
-  if(Math.abs(target-anim.explode)<.002){ anim.explode=target; first=false; }
+  anim.explode+=(target-anim.explode)*Math.min(1,dt*7);
+  if(Math.abs(target-anim.explode)<.002) anim.explode=target;
   const e=easeIO(Math.min(1,Math.max(0,anim.explode)));
-  for(const p of Object.values(PARTS)) p.group.position.copy(p.pivot).addScaledVector(p.explode,e);
-  partLabels.forEach(o=>o.visible=e>.3);
+  for(const p of Object.values(PARTS)){ p.group.position.copy(p.pivot).addScaledVector(p.explode,e); p.group.position.y+=380*p.drop; }
+  if(!building) partLabels.forEach(o=>o.visible=e>.3);
   // flecha de la pluma (exagerada)
   anim.sag+=(anim.sagTarget-anim.sag)*Math.min(1,dt*5); PARTS.pluma.group.rotation.z=-anim.sag;
   // vuelco
   if(Math.abs(anim.tilt)<1e-3&&Math.abs(anim.vtilt)<1e-3){ anim.pivot=anim.tiltTarget>0?XB:XF; tiltG.position.x=anim.pivot; inner.position.x=-anim.pivot; }
-  if(reduceMotion) anim.tilt=anim.tiltTarget; else { const kt=28; anim.vtilt+=(kt*(anim.tiltTarget-anim.tilt)-2*Math.sqrt(kt)*.55*anim.vtilt)*dt; anim.tilt+=anim.vtilt*dt; }
+  const tt=building?0:anim.tiltTarget;
+  if(reduceMotion) anim.tilt=tt; else { const kt=28; anim.vtilt+=(kt*(tt-anim.tilt)-2*Math.sqrt(kt)*.55*anim.vtilt)*dt; anim.tilt+=anim.vtilt*dt; }
   tiltG.rotation.z=anim.tilt;
   // carro
   const zw=zwJ(anim.x);
-  trolley.position.set(anim.x-XR,0,0);
+  trolley.position.set(anim.x-XR,railY(anim.x)-yc,0); trolley.rotation.z=-Math.atan(DROOP/(XT-XR));
   carriage.scale.z=Math.max(4,2*(zw-9)-2);
   brackets[0].position.z=-(zw-9.6); brackets[1].position.z=zw-9.6;
-  wheels.forEach((w,i)=>w.position.set(i<2?-7:7,1.5*LAY+5,(i%2?1:-1)*zw));
+  wheels.forEach((w,i)=>w.position.set(i<2?-7:7,-1,(i%2?1:-1)*(zw-11)));
   // cable y pesas
   scene.updateMatrixWorld();
   anchor.getWorldPosition(tmp); inner.worldToLocal(tmp);
@@ -1000,30 +1278,36 @@ function frame(now){
   segTo(cable,hookP,tmp,.45);
   loadG.position.copy(hookP); loadG.rotation.z=anim.phi;
   // superposiciones
-  const flat=e<.02;
+  const flat=e<.02&&!building;
   dimsG.visible=state.dims&&flat; dimLabels.forEach(o=>o.visible=dimsG.visible);
   cgG.visible=state.cg&&flat; cgLabel.visible=cgG.visible;
-  loadLabel.visible=e<.3;
+  const showLoad=state.load>0&&!building;
+  trolley.visible=cable.visible=loadG.visible=showLoad;
+  loadLabel.visible=e<.3&&showLoad;
   // cámara
   if(tween){ tween.t+=dt; const kk=Math.min(1,tween.t/tween.dur), ee=easeIO(kk); camera.position.lerpVectors(tween.p0,tween.p1,ee); controls.target.lerpVectors(tween.t0,tween.t1,ee); if(kk>=1) tween=null; }
   // hover
   if(pendingHover){
-    const ev=pendingHover; pendingHover=null; const id=pick(ev);
+    const ev=pendingHover; pendingHover=null; const id=tourI<0?pick(ev):null;
     if(id!==hoverPart){ hoverPart=id; applyMaterials(); }
     const tip=$('#tip');
     if(id){ const r=$('#app').getBoundingClientRect(); tip.hidden=false; tip.style.left=(ev.clientX-r.left)+'px'; tip.style.top=(ev.clientY-r.top)+'px'; tip.innerHTML=`${partName(id)}<small>Clic para ver detalles</small>`; renderer.domElement.style.cursor='pointer'; }
     else { tip.hidden=true; renderer.domElement.style.cursor=''; }
   }
   controls.update();
-  renderer.render(scene,camera); labelR.render(scene,camera);
+  renderNow(); labelR.render(scene,camera);
   requestAnimationFrame(frame);
 }
 
 /* ---------- Inicio ---------- */
+for(const p of Object.values(PARTS)) p.labelObj=partLabels[Object.keys(PARTS).indexOf(p.id)];
+if(isPhone()) $('#panel').classList.add('collapsed');
 resize();
-applyTheme(); update(); applyMaterials();
-{ const p=viewPose('3d'); camera.position.copy(p.pos).addScaledVector(V(.62,.4,.68).normalize(),reduceMotion?0:.9); controls.target.copy(p.target); camera.lookAt(p.target); flyTo('3d',2.2); started=true; }
-requestAnimationFrame(t=>{ last=t; frame(t); window.__gruaReady=true; $('#loading').classList.add('done'); });
+applyTheme(); update(); applyMaterials(); drawChart();
+{ const p=viewPose('3d'); camera.position.copy(p.pos).addScaledVector(V(.62,.4,.68).normalize(),reduceMotion?0:.8); controls.target.copy(p.target); camera.lookAt(p.target); flyTo('3d',2.6); started=true; }
+startBuild();
+window.__gruaReady=true;
+requestAnimationFrame(t=>{ last=t; frame(t); $('#loading').classList.add('done'); });
 </script>
 </body>
 </html>
