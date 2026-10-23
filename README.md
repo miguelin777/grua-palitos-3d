@@ -21,11 +21,15 @@ Modelo 3D interactivo de nuestra grúa hecha con palitos jumbo, alambre e hilo.
 - Ver la grúa armándose pieza por pieza.
 - Seguir un **recorrido guiado** de 9 pasos para presentarla en clase.
 - Cambiar de vista: madera, plano técnico, rayos X (amarres) y esfuerzos.
-- **Simular carga**: colgar pesas en la pluma y poner monedas en la charola para ver el centro de gravedad, el factor de seguridad y cuándo se vuelca. La grúa real no lleva pesas; esto es sólo simulación.
-- Consultar la **tabla de cargas** (carga máxima según el radio) y la lista de materiales.
+- **Prueba de carga**: poner peso en la charola (donde el profe pone la carga, a ~10 cm de la base) y ver el centro de gravedad, el factor de seguridad y cuánto aguanta antes de voltearse.
+- Simular, como extra, pesas colgadas de la pluma con su **tabla de cargas**.
+- Ver la lista de materiales y los datos de cada pieza.
+- Stickers que se pueden arrastrar y notas a mano que señalan las partes.
 - Guardar una imagen, modo presentación y pantalla completa.
 
 Atajos: `1`–`4` vistas · `P` presentación · `Esc` salir · `←` `→` en el recorrido.
+
+Si el proyector o la compu van lentos, abre la página con `?quieto` al final del link para quitar las animaciones.
 
 Las masas salen del propio modelo (3.2 g por palito). Los límites de resistencia son una estimación didáctica.
 

@@ -8,43 +8,56 @@
 <meta name="theme-color" content="#F2B705">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Grúa de Palitos · modelo 3D interactivo">
-<meta property="og:description" content="Gírala, cuélgale pesas y mira cuándo se vuelca. Simulación de carga, estabilidad y esfuerzos de nuestra grúa de palitos.">
+<meta property="og:description" content="Gírala, ponle carga a la charola y mira cuándo se voltea. Nuestra grúa de palitos en 3D, con medidas reales.">
 <meta property="og:url" content="https://miguelin777.github.io/grua-palitos-3d/">
 <meta property="og:image" content="https://miguelin777.github.io/grua-palitos-3d/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F2B705'/%3E%3Cpath d='M10 27V10M14 27V10M10 15l4 4M14 15l-4 4M10 22h4M5 10h23M14 10L10 5M10 5l-5 5M28 10v6' stroke='%23161A1D' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: escenario 3D a pantalla completa + paneles de instrumentos anclados a los bordes */
+/* Layout: escenario 3D a pantalla completa con cinta de obra arriba, título gigante, stickers sueltos
+   y una hoja de ingeniería cuadriculada como panel. Estilo de taller: bordes de tinta y sombras duras. */
 :root{
-  --bg:#E3E7E9; --bg-2:#F5F7F8; --panel:rgba(248,250,250,.9); --panel-solid:#F8FAFA;
-  --ink:#161A1D; --ink-2:#58626A; --line:rgba(22,26,29,.12); --line-2:rgba(22,26,29,.24);
-  --accent:#F2B705; --on-accent:#161A1D; --accent-text:#7E5C00;
-  --ok:#1D8A4E; --warn:#B57200; --bad:#C2352C;
+  --bg:#E6E8E4; --bg-2:#F6F6F2; --paper:#FCFCF9; --grid:rgba(37,99,201,.09);
+  --panel:#FCFCF9; --panel-solid:#FFFFFF;
+  --ink:#16191B; --ink-2:#596168; --line:rgba(22,25,27,.12); --line-2:rgba(22,25,27,.26);
+  --shadow:#16191B;
+  --accent:#F4B400; --on-accent:#16191B; --accent-text:#8A5E00;
+  --pen:#2350B8;
+  --ok:#1D8A4E; --warn:#B56E00; --bad:#C7322A;
   --scene-table:#F1F1EE; --scene-dim:#2563C9;
   --bp-bg:#0D3558; --bp-bg-2:#164E7C; --bp-line:#D3E8FF; --bp-fill:#11446C;
   --s0:#2E9E6B; --s1:#D9C23A; --s2:#EE8A2B; --s3:#D6362C; --s4:#7E1F6E;
+  --sticker-edge:#FFFFFF; --wood-1:#E3C08C; --wood-2:#CFA66E;
   --f-display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",sans-serif;
+  --f-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --tape-h:30px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0E1113; --bg-2:#1C2125; --panel:rgba(21,25,28,.9); --panel-solid:#15191C;
-    --ink:#E7EBEE; --ink-2:#98A2A9; --line:rgba(231,235,238,.1); --line-2:rgba(231,235,238,.22);
-    --accent:#F5C21B; --on-accent:#161A1D; --accent-text:#F5C21B;
+    --bg:#0F1113; --bg-2:#1D2124; --paper:#181B1E; --grid:rgba(134,182,255,.07);
+    --panel:#181B1E; --panel-solid:#121416;
+    --ink:#ECEDEA; --ink-2:#9DA5AB; --line:rgba(236,237,234,.11); --line-2:rgba(236,237,234,.24);
+    --shadow:#000000;
+    --accent:#F7C325; --on-accent:#16191B; --accent-text:#F7C325;
+    --pen:#8FB4FF;
     --ok:#46C27E; --warn:#EBA53C; --bad:#F06258;
     --scene-table:#2A2F33; --scene-dim:#86B6FF;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0E1113; --bg-2:#1C2125; --panel:rgba(21,25,28,.9); --panel-solid:#15191C;
-  --ink:#E7EBEE; --ink-2:#98A2A9; --line:rgba(231,235,238,.1); --line-2:rgba(231,235,238,.22);
-  --accent:#F5C21B; --on-accent:#161A1D; --accent-text:#F5C21B;
+  --bg:#0F1113; --bg-2:#1D2124; --paper:#181B1E; --grid:rgba(134,182,255,.07);
+  --panel:#181B1E; --panel-solid:#121416;
+  --ink:#ECEDEA; --ink-2:#9DA5AB; --line:rgba(236,237,234,.11); --line-2:rgba(236,237,234,.24);
+  --shadow:#000000;
+  --accent:#F7C325; --on-accent:#16191B; --accent-text:#F7C325;
+  --pen:#8FB4FF;
   --ok:#46C27E; --warn:#EBA53C; --bad:#F06258;
   --scene-table:#2A2F33; --scene-dim:#86B6FF;
   color-scheme:dark;
@@ -54,128 +67,201 @@ html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--f-body);overflow:hidden;-webkit-font-smoothing:antialiased}
 [hidden]{display:none!important}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-#app{position:relative;height:100%;overflow:hidden}
-#stage{position:absolute;inset:0;background:radial-gradient(120% 90% at 38% 34%,var(--bg-2),var(--bg) 72%);touch-action:none;transition:background .4s}
-#stage.bp{background:radial-gradient(120% 90% at 38% 34%,var(--bp-bg-2),var(--bp-bg) 75%)}
-#stage canvas{display:block;outline:none}
-.labels{position:absolute;inset:0;pointer-events:none}
-
-/* Marca */
-.brand{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));left:max(20px,env(safe-area-inset-left,0px));pointer-events:none;max-width:calc(100% - 420px);display:grid;gap:8px}
-.eyebrow{font:500 11px/1.3 var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
-#stage.bp ~ .brand .eyebrow,#stage.bp ~ .brand h1{color:var(--bp-line)}
-.brand h1{margin:0;font:800 clamp(34px,4.6vw,60px)/.86 var(--f-display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
-.hazard{width:132px;height:6px;border-radius:1px;background:repeating-linear-gradient(-45deg,var(--accent) 0 8px,var(--ink) 8px 16px)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
-.chip{font:400 12px/1 var(--f-mono);background:var(--panel);border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:var(--ink-2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-variant-numeric:tabular-nums}
-.chip b{color:var(--ink);font-weight:500}
-.chip.status{font-weight:500;color:var(--ink)}
-.chip.status::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:0;background:var(--st,var(--ok))}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
 [data-state="ok"]{--st:var(--ok)}
 [data-state="warn"]{--st:var(--warn)}
 [data-state="bad"]{--st:var(--bad)}
 
-/* Panel */
-.panel{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:350px;max-height:calc(100% - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);box-shadow:0 12px 40px -18px rgba(0,0,0,.35);overflow:hidden}
-.sheet-handle{display:none}
-.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin:12px 12px 0;padding:3px;border-radius:9px;background:var(--line)}
-.seg button{border:0;background:transparent;padding:7px 4px;border-radius:7px;font:500 12px/1 var(--f-body);color:var(--ink-2)}
-.seg button[aria-checked="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
-.tabs{display:flex;gap:2px;padding:0 12px;margin-top:10px;border-bottom:1px solid var(--line)}
-.tabs button{flex:1;border:0;background:none;padding:10px 4px 9px;font:600 12px/1 var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);border-bottom:2px solid transparent;margin-bottom:-1px}
-.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.pane-wrap{overflow:auto;flex:1;min-height:0;overscroll-behavior:contain}
-.pane{display:grid;gap:16px;padding:16px 16px 18px}
-.ctl{display:grid;gap:7px}
-.ctl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:500;font-size:13px}
-.ctl output{font:500 13px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
-.ctl small{font-size:11.5px;color:var(--ink-2)}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;margin:0}
-input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent) var(--p,50%),var(--line-2) var(--p,50%))}
-input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--line-2)}
-input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--accent)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--panel-solid);border:3px solid var(--accent);margin-top:-7px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
-input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--panel-solid);border:3px solid var(--accent)}
+#app{position:relative;height:100%;overflow:hidden}
+#stage{position:absolute;inset:0;background:radial-gradient(120% 90% at 34% 40%,var(--bg-2),var(--bg) 72%);touch-action:none;transition:background .4s}
+#stage.bp{background:radial-gradient(120% 90% at 34% 40%,var(--bp-bg-2),var(--bp-bg) 75%)}
+#stage canvas{display:block;outline:none;position:relative;z-index:1}
+.labels{position:absolute;inset:0;pointer-events:none;z-index:2}
 
-.gauge{display:grid;gap:6px;padding:12px;border-radius:10px;background:var(--line)}
-.gauge-head{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2)}
-.gauge-head b{font:500 12px var(--f-mono);color:var(--ink)}
-.gauge-track{position:relative;height:26px;border-radius:6px;background:var(--panel-solid)}
-.gauge-zone{position:absolute;top:3px;bottom:3px;border-radius:4px;background:color-mix(in srgb,var(--st) 22%,transparent);border:1px solid var(--st);transition:background .3s,border-color .3s}
-.gauge-axis{position:absolute;top:0;bottom:0;width:0;border-left:1px dashed var(--ink-2)}
-.gauge-cg{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;transform:rotate(45deg);background:var(--st);border:2px solid var(--panel-solid);transition:left .25s ease-out,background .3s}
-.gauge-scale{display:flex;justify-content:space-between;font:400 10.5px var(--f-mono);color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+/* Letras gigantes de fondo */
+.bigtype{position:absolute;left:-2vw;right:-2vw;bottom:-4vh;z-index:0;pointer-events:none;font:900 clamp(120px,24vw,420px)/.78 var(--f-display);text-transform:uppercase;letter-spacing:-.01em;color:transparent;-webkit-text-stroke:2px var(--line-2);white-space:nowrap;user-select:none;transform:translate3d(var(--px,0),var(--py,0),0);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+#stage.bp .bigtype{-webkit-text-stroke-color:rgba(211,232,255,.18)}
+
+/* Cinta de obra */
+.tape{position:absolute;top:0;left:0;right:0;z-index:8;height:calc(var(--tape-h) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:var(--accent);color:var(--on-accent);overflow:hidden;border-bottom:2px solid var(--shadow);display:flex;align-items:center}
+.tape::before,.tape::after{content:"";position:absolute;left:0;right:0;height:5px;background:repeating-linear-gradient(-45deg,var(--on-accent) 0 7px,transparent 7px 14px)}
+.tape::before{top:env(safe-area-inset-top,0px)} .tape::after{bottom:0}
+.tape-track{display:flex;white-space:nowrap;animation:tape 38s linear infinite;font:800 13px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase}
+.tape-track span{padding-right:2.5em}
+@keyframes tape{to{transform:translateX(-50%)}}
+
+/* Marca */
+.brand{position:absolute;z-index:4;top:calc(var(--tape-h) + 14px + env(safe-area-inset-top,0px));left:max(22px,env(safe-area-inset-left,0px));pointer-events:none;max-width:calc(100% - 430px)}
+.kicker{font:700 24px/1 var(--f-hand);color:var(--pen);transform:rotate(-2deg);transform-origin:left;margin:0 0 18px 4px}
+.title{margin:0;position:relative;display:inline-block}
+.title .big{display:block;font:900 clamp(78px,10.5vw,168px)/.8 var(--f-display);text-transform:uppercase;letter-spacing:-.015em}
+.title .big i{display:inline-block;font-style:normal;animation:rise .7s cubic-bezier(.2,.9,.25,1.25) both;animation-delay:calc(var(--i)*70ms + .15s)}
+.title .small{position:absolute;right:-.2em;bottom:-.42em;font:700 clamp(34px,3.6vw,56px)/1 var(--f-hand);color:var(--accent-text);transform:rotate(-6deg);white-space:nowrap;animation:pop .6s cubic-bezier(.2,.9,.3,1.4) .6s both}
+.title svg.scribble{position:absolute;left:-4px;right:0;bottom:-.34em;width:100%;height:.3em;overflow:visible}
+.scribble path{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1s ease-out .45s forwards}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:28px;font:500 12px/1 var(--f-mono);color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.stats b{display:block;font:800 26px/1 var(--f-display);color:var(--ink);letter-spacing:0;margin-bottom:3px}
+#stage.bp ~ .brand{--ink:#EAF3FF;--ink-2:#A9C6E8;--accent-text:var(--accent);--pen:#BFD8FF}
+#stage.bp ~ .brand .title,#stage.bp ~ .brand .stats{color:#EAF3FF}
+
+/* Sello de estado */
+.stamp{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:6px 12px 5px;border:3px solid var(--st);outline:1.5px solid var(--st);outline-offset:3px;border-radius:4px;color:var(--st);font:900 20px/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em;transform:rotate(-4deg);background:color-mix(in srgb,var(--st) 8%,transparent);mix-blend-mode:multiply}
+:root[data-theme="dark"] .stamp{mix-blend-mode:normal}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .stamp{mix-blend-mode:normal} }
+.stamp small{font:600 12px/1 var(--f-mono);letter-spacing:.04em}
+.stamp.thunk{animation:thunk .45s cubic-bezier(.2,.9,.3,1.3)}
+
+/* Stickers */
+.sticker{position:absolute;z-index:5;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18)) drop-shadow(0 1px 1px rgba(0,0,0,.2));transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--r,0deg));animation:stick .55s cubic-bezier(.2,.9,.3,1.35) both;animation-delay:var(--d,1.4s);transition:filter .2s}
+.sticker:hover{--lift:1}
+.sticker.drag{cursor:grabbing;filter:drop-shadow(0 16px 18px rgba(0,0,0,.25));transition:none}
+.st-round{width:112px;height:112px;border-radius:50%;background:var(--accent);color:var(--on-accent);border:5px solid var(--sticker-edge);display:grid;place-content:center;text-align:center}
+.st-round b{font:900 46px/.8 var(--f-display)}
+.st-round span{font:700 15px/1 var(--f-hand)}
+.st-stick{width:190px;height:38px;border-radius:19px;border:4px solid var(--sticker-edge);background:repeating-linear-gradient(178deg,transparent 0 5px,rgba(120,72,20,.10) 5px 6px),linear-gradient(180deg,var(--wood-1),var(--wood-2));display:flex;align-items:center;justify-content:center;gap:8px;color:#4A2E0E}
+.st-stick b{font:900 24px/1 var(--f-display)}
+.st-stick span{font:700 20px/1 var(--f-hand)}
+.st-tag{padding:9px 14px 8px;background:var(--on-accent);color:var(--accent);border:4px solid var(--sticker-edge);border-radius:6px;font:900 22px/.9 var(--f-display);text-transform:uppercase;letter-spacing:.06em;text-align:center}
+.st-tag small{display:block;font:700 15px/1 var(--f-hand);letter-spacing:0;text-transform:none;color:#fff;margin-top:3px}
+.st-wire{display:flex;align-items:center;gap:6px;padding:8px 12px 8px 8px;background:var(--sticker-edge);color:#16191B;border-radius:22px 8px 8px 22px;font:700 20px/1 var(--f-hand)}
+.st-wire i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff 0 4px,#9aa2a9 5px 7px,#d6dadd 8px);display:block}
+
+/* Notas a mano sobre el modelo (CSS2D) */
+.hand-note{width:0;height:0;position:relative;pointer-events:none}
+.hand-note svg{position:absolute;overflow:visible}
+.hand-note path{fill:none;stroke:var(--pen);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:160;stroke-dashoffset:160}
+.hand-note span{position:absolute;white-space:nowrap;font:700 22px/1 var(--f-hand);color:var(--pen);opacity:0;transform:rotate(-3deg)}
+.hand-note.on path{animation:draw .7s ease-out forwards}
+.hand-note.on span{animation:fadein .4s ease-out .35s forwards}
+#stage.bp .hand-note{--pen:#FFE27A}
+
+/* Panel: hoja de ingeniería */
+.panel{position:absolute;z-index:6;top:calc(var(--tape-h) + 14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:356px;max-height:calc(100% - var(--tape-h) - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px;border:2px solid var(--ink);border-radius:6px;box-shadow:6px 6px 0 var(--shadow);overflow:hidden;animation:slidein .6s cubic-bezier(.2,.8,.2,1) .2s both}
+.sheet-handle{display:none}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:12px 14px 0}
+.panel-head h2{margin:0;font:900 26px/.9 var(--f-display);text-transform:uppercase;letter-spacing:.02em}
+.panel-head span{font:700 19px/1 var(--f-hand);color:var(--pen);transform:rotate(-3deg)}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);margin:10px 14px 0;border:2px solid var(--ink);border-radius:5px;overflow:hidden;background:var(--panel-solid)}
+.seg button{border:0;border-left:2px solid var(--ink);background:transparent;padding:8px 2px 7px;font:800 14px/1 var(--f-display);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--ink);background:var(--line)}
+.seg button[aria-checked="true"]{background:var(--accent);color:var(--on-accent)}
+.tabs{display:flex;gap:6px;padding:0 14px;margin-top:12px;border-bottom:2px solid var(--ink)}
+.tabs button{flex:1;border:2px solid var(--ink);border-bottom:0;background:var(--line);padding:8px 4px 6px;font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);border-radius:6px 6px 0 0;transform:translateY(2px)}
+.tabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);transform:none;padding-bottom:8px}
+.pane-wrap{overflow:auto;flex:1;min-height:0;overscroll-behavior:contain}
+.pane{display:grid;gap:16px;padding:16px 14px 18px}
+.ctl{display:grid;gap:6px}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:600;font-size:13px}
+.ctl output{font:600 13px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.ctl small{font:700 16px/1 var(--f-hand);color:var(--pen)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:4px;border:2px solid var(--ink);background:linear-gradient(90deg,var(--accent) var(--p,50%),var(--panel-solid) var(--p,50%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:4px;border:2px solid var(--ink);background:var(--panel-solid)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:4px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:4px;background:var(--panel-solid);border:2px solid var(--ink);margin-top:-8px;box-shadow:2px 2px 0 var(--shadow);transform:rotate(45deg)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:4px;background:var(--panel-solid);border:2px solid var(--ink)}
+
+.hero{display:grid;gap:2px;padding:12px 14px 10px;border:2px solid var(--ink);border-radius:5px;background:var(--panel-solid);box-shadow:3px 3px 0 var(--shadow);position:relative}
+.hero::after{content:"";position:absolute;top:-2px;right:14px;width:42px;height:16px;background:color-mix(in srgb,var(--accent) 70%,transparent);transform:translateY(-55%) rotate(4deg)}
+.hero-k{font:600 11px/1.2 var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.hero-v{font:900 62px/.85 var(--f-display);color:var(--st);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.hero-n{font:700 19px/1.05 var(--f-hand);color:var(--pen)}
+
+.gauge{display:grid;gap:6px}
+.gauge-head{display:flex;justify-content:space-between;align-items:baseline;font:600 11px/1.2 var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.gauge-head b{font:600 12px var(--f-mono);color:var(--ink);letter-spacing:0;text-transform:none}
+.gauge-track{position:relative;height:30px;border-radius:4px;background:var(--panel-solid);border:2px solid var(--ink)}
+.gauge-zone{position:absolute;top:3px;bottom:3px;border-radius:2px;background:repeating-linear-gradient(-45deg,color-mix(in srgb,var(--st) 30%,transparent) 0 5px,color-mix(in srgb,var(--st) 12%,transparent) 5px 10px);border:1.5px solid var(--st);transition:border-color .3s}
+.gauge-axis{position:absolute;top:0;bottom:0;width:0;border-left:1.5px dashed var(--ink-2)}
+.gauge-cg{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;transform:rotate(45deg);background:var(--st);border:2px solid var(--ink);transition:left .3s cubic-bezier(.2,.9,.3,1.3),background .3s}
+.gauge-scale{display:flex;justify-content:space-between;font:700 15px/1 var(--f-hand);color:var(--ink-2)}
 
 .readout{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin:0}
 .readout div{min-width:0}
-.readout dt{font:500 10.5px/1.25 var(--f-mono);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2)}
-.readout dd{margin:3px 0 0;font:500 15px/1.2 var(--f-mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.readout dt{font:600 10.5px/1.25 var(--f-mono);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2)}
+.readout dd{margin:3px 0 0;font:800 21px/1.05 var(--f-display);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .readout .wide{grid-column:1/-1}
 .readout dd.hl{color:var(--st)}
-.row-btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:0;background:var(--accent);color:var(--on-accent);border-radius:8px;padding:9px 13px;font:600 13px/1 var(--f-body)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:2px solid var(--ink);background:var(--accent);color:var(--on-accent);border-radius:5px;padding:9px 14px 8px;font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;box-shadow:3px 3px 0 var(--shadow);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.ghost{background:var(--panel-solid);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:3px 3px 0 var(--shadow)}
 .note{margin:0;font-size:12px;color:var(--ink-2);line-height:1.5}
+.hand{font-family:var(--f-hand)}
 
-.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:500;cursor:pointer}
-.switch input{appearance:none;-webkit-appearance:none;width:36px;height:20px;border-radius:999px;background:var(--line-2);position:relative;transition:background .2s;flex:none;margin:0;cursor:pointer}
-.switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--panel-solid);transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+details.extra{border:2px dashed var(--line-2);border-radius:6px;padding:0 12px}
+details.extra[open]{padding-bottom:14px}
+details.extra summary{cursor:pointer;list-style:none;padding:10px 0;font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.05em;display:flex;justify-content:space-between;align-items:center}
+details.extra summary::-webkit-details-marker{display:none}
+details.extra summary::after{content:"+";font:900 22px/1 var(--f-display);transition:transform .2s}
+details.extra[open] summary::after{transform:rotate(45deg)}
+details.extra .inner{display:grid;gap:14px}
+
+.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;cursor:pointer}
+.switch input{appearance:none;-webkit-appearance:none;width:40px;height:22px;border-radius:4px;background:var(--panel-solid);border:2px solid var(--ink);position:relative;flex:none;margin:0;cursor:pointer;transition:background .2s}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:2px;background:var(--ink);transition:transform .2s cubic-bezier(.2,.9,.3,1.3)}
 .switch input:checked{background:var(--accent)}
-.switch input:checked::after{transform:translateX(16px)}
+.switch input:checked::after{transform:translateX(18px)}
 .switch span small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-2)}
 
 .parts{display:grid;gap:4px}
-.part-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:transparent;padding:8px 10px;border-radius:8px}
+.part-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;text-align:left;border:2px solid transparent;background:transparent;padding:7px 10px;border-radius:5px}
 .part-row:hover{background:var(--line)}
-.part-row[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
-.part-row b{font:700 17px/1 var(--f-display);text-transform:uppercase;letter-spacing:.02em}
+.part-row[aria-pressed="true"]{border-color:var(--ink);background:var(--accent);color:var(--on-accent)}
+.part-row[aria-pressed="true"] span{color:var(--on-accent)}
+.part-row b{font:800 19px/1 var(--f-display);text-transform:uppercase;letter-spacing:.02em}
 .part-row span{font:400 12px var(--f-mono);color:var(--ink-2);font-variant-numeric:tabular-nums}
-.part-info{padding:12px;border-radius:10px;background:var(--line);display:grid;gap:6px}
-.part-info h3{margin:0;font:800 22px/1 var(--f-display);text-transform:uppercase}
+.part-info{padding:12px;border:2px solid var(--ink);border-radius:5px;background:var(--panel-solid);box-shadow:3px 3px 0 var(--shadow);display:grid;gap:6px}
+.part-info h3{margin:0;font:900 26px/1 var(--f-display);text-transform:uppercase}
 .part-info p{margin:0;font-size:13px}
 .bom{margin:0;padding:0;list-style:none;display:grid;gap:0}
-.bom li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+.bom li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1.5px dashed var(--line-2);font-size:13px}
 .bom li span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
-.sec-title{margin:0;font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2)}
+.sec-title{margin:0;font:900 18px var(--f-display);text-transform:uppercase;letter-spacing:.05em}
 
-/* Dock inferior: recorrido, leyendas, vistas y herramientas */
-.dock{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100% - 400px);pointer-events:none}
+/* Dock inferior */
+.dock{position:absolute;z-index:6;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-start;gap:10px;max-width:calc(100% - 410px);pointer-events:none}
 .dock>*{pointer-events:auto}
-.dock-row{display:flex;flex-wrap:wrap;gap:8px}
-.views,.tools{display:flex;gap:3px;padding:3px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.tools .ic{width:34px;height:30px;display:grid;place-items:center;border:0;background:transparent;border-radius:7px;color:var(--ink-2)}
-.tools .ic:hover{background:var(--line);color:var(--ink)}
+.dock-row{display:flex;flex-wrap:wrap;gap:10px}
+.views,.tools{display:flex;border:2px solid var(--ink);border-radius:5px;background:var(--panel-solid);box-shadow:3px 3px 0 var(--shadow);overflow:hidden}
+.views button{border:0;border-left:2px solid var(--ink);background:transparent;padding:8px 12px 7px;font:800 14px/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.views button:first-child{border-left:0}
+.views button:hover{color:var(--ink);background:var(--line)}
+.views button.on{color:var(--on-accent);background:var(--accent)}
+.tools .ic{width:38px;height:33px;display:grid;place-items:center;border:0;border-left:2px solid var(--ink);background:transparent;color:var(--ink)}
+.tools .ic:hover{background:var(--line)}
 .tools .ic[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
-.tool-tour{border:0;background:var(--accent);color:var(--on-accent);border-radius:7px;padding:0 12px 0 9px;height:30px;font:600 12.5px/1 var(--f-body);display:flex;align-items:center;gap:6px}
-.tools svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px solid var(--line-2);background:var(--panel-solid)}
+.tool-tour{border:0;background:var(--ink);color:var(--paper);padding:0 14px 0 11px;height:33px;font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:7px}
+.tool-tour:hover{background:var(--accent);color:var(--on-accent)}
+.tools svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:3px;border:1.5px solid var(--ink);background:var(--panel-solid)}
 
-.tour{width:min(430px,100%);padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);box-shadow:0 14px 40px -18px rgba(0,0,0,.4);display:grid;gap:8px}
+.tour{width:min(440px,100%);padding:14px 16px;border:2px solid var(--ink);border-radius:6px;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px;box-shadow:5px 5px 0 var(--shadow);display:grid;gap:8px;animation:pop .4s cubic-bezier(.2,.9,.3,1.3) both}
 .tour-top{display:flex;justify-content:space-between;align-items:center}
-.tour-n{font:500 11px var(--f-mono);letter-spacing:.12em;color:var(--accent-text);font-variant-numeric:tabular-nums}
-.tour .x{border:0;background:transparent;font-size:22px;line-height:1;color:var(--ink-2);width:28px;height:28px;border-radius:6px;margin:-6px -6px 0 0}
-.tour .x:hover{background:var(--line);color:var(--ink)}
-.tour h2{margin:0;font:800 32px/.92 var(--f-display);text-transform:uppercase;text-wrap:balance}
+.tour-n{font:700 22px/1 var(--f-hand);color:var(--pen);font-variant-numeric:tabular-nums}
+.tour .x{border:2px solid var(--ink);background:var(--panel-solid);font:800 18px/1 var(--f-display);color:var(--ink);width:30px;height:30px;border-radius:5px}
+.tour .x:hover{background:var(--accent);color:var(--on-accent)}
+.tour h2{margin:0;font:900 40px/.88 var(--f-display);text-transform:uppercase;text-wrap:balance}
 .tour p{margin:0;font-size:14px;line-height:1.52}
-.tour-bar{display:flex;gap:3px;margin-top:2px}
-.tour-bar i{flex:1;height:3px;border-radius:2px;background:var(--line-2);transition:background .3s}
+.tour-bar{display:flex;gap:4px;margin-top:2px}
+.tour-bar i{flex:1;height:6px;border:1.5px solid var(--ink);border-radius:2px;background:var(--panel-solid);transition:background .3s}
 .tour-bar i.on{background:var(--accent)}
-.tour-btns{display:flex;justify-content:flex-end;gap:8px}
-.btn:disabled{opacity:.4;cursor:default}
+.tour-btns{display:flex;justify-content:flex-end;gap:10px}
 
-.toast{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-8px);background:var(--ink);color:var(--bg);font:500 13px var(--f-body);padding:9px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:10;white-space:nowrap}
-.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast{position:absolute;z-index:9;top:calc(var(--tape-h) + 18px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-8px) rotate(-1deg);background:var(--ink);color:var(--paper);font:700 20px/1 var(--f-hand);padding:9px 16px;border-radius:5px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0) rotate(-1deg)}
 
-.chart-box{display:grid;gap:6px;padding:12px;border-radius:10px;background:var(--line)}
-#chart{display:block;width:100%;height:auto;background:var(--panel-solid);border-radius:6px;touch-action:none;cursor:crosshair}
+.chart-box{display:grid;gap:6px}
+#chart{display:block;width:100%;height:auto;background:var(--panel-solid);border:2px solid var(--ink);border-radius:4px;touch-action:none;cursor:crosshair}
 #chart .gl{stroke:var(--line);stroke-width:1}
 #chart .tk,#chart .ax{fill:var(--ink-2);font:9px var(--f-mono)}
 #chart .area{fill:color-mix(in srgb,var(--ok) 20%,transparent)}
-#chart .ln-tip{fill:none;stroke:var(--warn);stroke-width:1.8;stroke-dasharray:5 3}
-#chart .ln-str{fill:none;stroke:var(--bad);stroke-width:1.8}
-#chart .mk{fill:var(--st);stroke:var(--panel-solid);stroke-width:2.5}
+#chart .ln-tip{fill:none;stroke:var(--warn);stroke-width:2;stroke-dasharray:5 3}
+#chart .ln-str{fill:none;stroke:var(--bad);stroke-width:2}
+#chart .mk{fill:var(--st);stroke:var(--ink);stroke-width:2}
 #chart .mk-h{stroke:var(--st);stroke-width:1;stroke-dasharray:2 2}
 .chart-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--ink-2)}
 .k{display:inline-block;width:14px;vertical-align:middle;margin-right:6px}
@@ -183,73 +269,104 @@ kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px sol
 .k-tip{border-top:2px dashed var(--warn)}
 .k-str{border-top:2px solid var(--bad)}
 
+.legend{width:min(280px,100%);padding:10px 12px;border:2px solid var(--ink);border-radius:5px;background:var(--panel-solid);box-shadow:3px 3px 0 var(--shadow);display:grid;gap:6px;font-size:12px}
+.legend .bar{height:10px;border:1.5px solid var(--ink);border-radius:3px;background:linear-gradient(90deg,var(--s0) 0%,var(--s1) 36%,var(--s2) 60%,var(--s3) 80%,var(--s4) 100%)}
+.legend .ticks{display:flex;justify-content:space-between;font:400 10.5px var(--f-mono);color:var(--ink-2)}
+.legend b{font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em}
+
 /* Modo presentación */
-.present .panel,.present .chips,.present .views,.present .legend,.present .tour{display:none!important}
+.present .panel,.present .views,.present .legend,.present .tour,.present .stats,.present .stamp{display:none!important}
 .present .dock{max-width:calc(100% - 32px)}
 
-/* Vistas */
-.views button{border:0;background:transparent;padding:8px 11px;border-radius:7px;font:500 11.5px/1 var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
-.views button:hover{color:var(--ink);background:var(--line)}
-.views button.on{color:var(--ink);background:var(--line-2)}
-.legend{width:min(270px,100%);padding:10px 12px;border-radius:10px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;gap:6px;font-size:12px}
-.legend .bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--s0) 0%,var(--s1) 36%,var(--s2) 60%,var(--s3) 80%,var(--s4) 100%)}
-.legend .ticks{display:flex;justify-content:space-between;font:400 10.5px var(--f-mono);color:var(--ink-2)}
-.legend b{font-weight:600}
-
-.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:500 12px/1.3 var(--f-body);padding:6px 9px;border-radius:6px;white-space:nowrap;transform:translate(14px,14px);z-index:5}
-.tip small{display:block;opacity:.7;font-weight:400}
+.tip{position:absolute;z-index:7;pointer-events:none;background:var(--ink);color:var(--paper);font:800 15px/1.1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;padding:7px 10px;border-radius:4px;white-space:nowrap;transform:translate(14px,14px) rotate(-2deg)}
+.tip small{display:block;font:700 15px/1 var(--f-hand);text-transform:none;letter-spacing:0;color:var(--accent);margin-top:2px}
 
 /* Etiquetas 3D */
-.dim-label{font:500 11px/1 var(--f-mono);color:var(--ink);background:var(--panel-solid);border:1px solid var(--line-2);padding:4px 7px;border-radius:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
-.part-label{font:800 15px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;background:var(--accent);color:var(--on-accent);padding:5px 9px 4px;border-radius:3px;white-space:nowrap}
-.load-label{font:500 11px/1 var(--f-mono);background:var(--ink);color:var(--bg);padding:4px 7px;border-radius:4px;white-space:nowrap}
-.cg-label{font:600 10.5px/1 var(--f-mono);color:var(--on-accent);background:var(--accent);padding:3px 6px;border-radius:3px;white-space:nowrap}
+.dim-label{font:600 11px/1 var(--f-mono);color:var(--ink);background:var(--panel-solid);border:1.5px solid var(--ink);padding:4px 7px;border-radius:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.part-label{font:900 17px/1 var(--f-display);text-transform:uppercase;letter-spacing:.05em;background:var(--accent);color:var(--on-accent);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--shadow);padding:5px 9px 4px;border-radius:3px;white-space:nowrap;transform:rotate(-2deg)}
+.load-label{font:700 18px/1 var(--f-hand);background:var(--ink);color:var(--paper);padding:3px 8px;border-radius:4px;white-space:nowrap;transform:rotate(-3deg)}
+.cg-label{font:800 13px/1 var(--f-display);letter-spacing:.06em;color:var(--on-accent);background:var(--accent);border:1.5px solid var(--ink);padding:3px 6px 2px;border-radius:3px;white-space:nowrap}
 
-.loading{position:absolute;inset:0;display:grid;place-items:center;font:500 13px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--bg);transition:opacity .5s;z-index:20}
+.loading{position:absolute;inset:0;display:grid;place-items:center;font:900 40px/1 var(--f-display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);background:var(--bg);transition:opacity .5s;z-index:20}
+.loading span{font:700 22px/1 var(--f-hand);color:var(--pen);text-transform:none;display:block;text-align:center;margin-top:6px}
 .loading.done{opacity:0;pointer-events:none}
+
+@keyframes rise{from{transform:translateY(.5em) rotate(4deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{from{transform:scale(.4) rotate(-12deg);opacity:0}}
+@keyframes stick{0%{opacity:0;transform:translate(var(--dx,0px),var(--dy,0px)) rotate(calc(var(--r,0deg) - 25deg)) scale(1.6)}60%{opacity:1}100%{opacity:1}}
+@keyframes thunk{0%{transform:rotate(-4deg) scale(1.5);opacity:.2}100%{transform:rotate(-4deg) scale(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fadein{to{opacity:1}}
+@keyframes slidein{from{transform:translateX(40px);opacity:0}}
 
 /* Celular: el panel se vuelve hoja inferior */
 @media (max-width: 860px){
-  .brand{max-width:calc(100% - 32px);left:max(16px,env(safe-area-inset-left,0px));top:calc(12px + env(safe-area-inset-top,0px));gap:6px}
-  .brand h1{font-size:34px}
-  .eyebrow{font-size:10px}
-  .hazard{width:96px;height:5px}
-  .chip{font-size:11px;padding:5px 8px}
-  .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:min(46%,440px);border-radius:16px 16px 0 0;border-left:0;border-right:0;border-bottom:0;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  :root{--tape-h:26px}
+  .tape-track{font-size:11px}
+  .brand{max-width:calc(100% - 32px);left:max(16px,env(safe-area-inset-left,0px));top:calc(var(--tape-h) + 10px + env(safe-area-inset-top,0px))}
+  .kicker{font-size:19px}
+  .title .big{font-size:64px}
+  .title .small{font-size:30px}
+  .stats{margin-top:20px;gap:12px;font-size:10px}
+  .stats b{font-size:20px}
+  .stamp{font-size:15px;margin-top:10px;padding:4px 9px 3px}
+  .bigtype{font-size:38vw;bottom:auto;top:30%;-webkit-text-stroke-color:var(--line)}
+  .sticker{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--r,0deg)) scale(.72)}
+  .st-hide-phone{display:none}
+  .st-round{left:auto!important;right:6px;top:calc(var(--tape-h) + 54px)!important}
+  .st-tag{left:auto!important;right:2px;top:calc(var(--tape-h) + 150px)!important}
+  .panel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:min(48%,450px);border-radius:12px 12px 0 0;border-left:0;border-right:0;border-bottom:0;box-shadow:0 -4px 0 var(--shadow);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px);animation:none}
+  .panel-head{display:none}
   .sheet-handle{display:block;border:0;background:transparent;height:20px;width:100%;position:relative;flex:none}
-  .sheet-handle::after{content:"";position:absolute;left:50%;top:8px;width:42px;height:4px;margin-left:-21px;border-radius:2px;background:var(--line-2)}
+  .sheet-handle::after{content:"";position:absolute;left:50%;top:8px;width:46px;height:5px;margin-left:-23px;border-radius:3px;background:var(--ink)}
   .seg{margin-top:0}
   .panel.collapsed .pane-wrap{display:none}
-  .dock{bottom:calc(var(--sheet-h,0px) + 10px);max-width:calc(100% - 32px)}
-  .touring .legend,.touring .dock-row,.touring .chips{display:none!important}
+  .dock{bottom:calc(var(--sheet-h,0px) + 12px);max-width:calc(100% - 32px)}
+  .touring .legend,.touring .dock-row,.touring .stats,.touring .sticker{display:none!important}
   .touring .dock{max-width:none;right:max(16px,env(safe-area-inset-right,0px))}
   .tour{padding:12px 14px;width:100%}
-  .tour h2{font-size:26px}
+  .tour h2{font-size:30px}
   .tour p{font-size:13px}
   .tip{display:none}
+  .hand-note span{font-size:18px}
 }
-@media (max-width: 380px){ .views button{padding:8px 8px} .brand h1{font-size:30px} }
-@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+@media (max-width: 380px){ .views button{padding:8px 8px 7px} .title .big{font-size:56px} }
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important} .scribble path,.hand-note path{stroke-dashoffset:0} .hand-note span{opacity:1} }
+.quieto *{transition:none!important;animation:none!important}
+.quieto .scribble path,.quieto .hand-note path{stroke-dashoffset:0}
+.quieto .hand-note span{opacity:1}
+.quieto .tape-track{animation:none!important}
 </style>
 </head>
 <body>
 <div id="app">
-  <div id="stage"></div>
+  <div id="stage"><div class="bigtype" id="bigtype" aria-hidden="true">Palitos</div></div>
+
+  <div class="tape" aria-hidden="true"><div class="tape-track" id="tape"></div></div>
 
   <header class="brand">
-    <div class="eyebrow">Modelo 3D · palitos jumbo 150 × 18 × 2 mm</div>
-    <h1>Grúa de palitos</h1>
-    <div class="hazard" aria-hidden="true"></div>
-    <div class="chips">
-      <span class="chip"><b id="c-sticks">–</b> palitos</span>
-      <span class="chip"><b id="c-joints">–</b> amarres</span>
-      <span class="chip"><b id="c-mass">–</b> g</span>
-      <span class="chip status" id="c-status" data-state="ok">–</span>
+    <p class="kicker">nuestra grúa, amarrada a mano</p>
+    <h1 class="title" aria-label="Grúa de palitos">
+      <span class="big" aria-hidden="true"><i style="--i:0">G</i><i style="--i:1">r</i><i style="--i:2">ú</i><i style="--i:3">a</i></span>
+      <svg class="scribble" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path d="M4 18 C 60 6, 120 26, 180 14 S 270 10, 296 16"/></svg>
+      <span class="small" aria-hidden="true">de palitos</span>
+    </h1>
+    <div class="stats">
+      <span><b id="c-sticks">–</b>palitos</span>
+      <span><b id="c-joints">–</b>amarres</span>
+      <span><b id="c-mass">–</b>gramos</span>
     </div>
+    <div class="stamp" id="c-status" data-state="ok">–</div>
   </header>
+
+  <div class="sticker st-round" data-sticker style="left:max(22px,env(safe-area-inset-left,0px));top:56%;--r:-12deg;--d:1.5s"><b>82</b><span>cm de punta<br>a punta</span></div>
+  <div class="sticker st-stick st-hide-phone" data-sticker style="left:150px;top:calc(56% + 44px);--r:8deg;--d:1.7s"><b id="s-sticks">327</b><span>palitos jumbo</span></div>
+  <div class="sticker st-tag" data-sticker style="left:46px;top:calc(58% + 128px);--r:-4deg;--d:1.9s">Hecha a mano<small>alambre, hilo y paciencia</small></div>
+  <div class="sticker st-wire st-hide-phone" data-sticker style="right:calc(356px + 48px);bottom:calc(84px + env(safe-area-inset-bottom,0px));--r:-5deg;--d:2.1s"><i></i><span id="s-joints">101</span> amarres</div>
 
   <aside class="panel" id="panel" aria-label="Controles">
     <button class="sheet-handle" id="sheet-handle" aria-label="Mostrar u ocultar controles"></button>
+    <div class="panel-head"><h2>Ficha técnica</h2><span>hoja 1 de 1</span></div>
     <div class="seg" role="radiogroup" aria-label="Modo de visualización">
       <button role="radio" data-mode="wood" aria-checked="true">Madera</button>
       <button role="radio" data-mode="bp" aria-checked="false">Plano</button>
@@ -263,43 +380,54 @@ kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px sol
     </div>
     <div class="pane-wrap">
       <section class="pane" data-pane="carga">
-        <p class="note">La grúa real no lleva pesas ni monedas. Mueve estos controles para simular cuánto aguantaría.</p>
-        <div class="ctl">
-          <label for="rng-x">Radio del carro <output id="o-x">–</output></label>
-          <input type="range" id="rng-x" min="130" max="520" step="5" value="420">
+        <div class="hero" id="hero" data-state="ok">
+          <span class="hero-k">La charola aguanta hasta</span>
+          <b class="hero-v" id="o-hero">–</b>
+          <span class="hero-n" id="o-hero-n">antes de que la grúa se voltee</span>
         </div>
         <div class="ctl">
-          <label for="rng-load">Pesas colgadas <output id="o-load">–</output></label>
-          <input type="range" id="rng-load" min="0" max="1500" step="10" value="0">
-        </div>
-        <div class="ctl">
-          <label for="rng-cw">Lastre en la charola <output id="o-cw">–</output></label>
-          <input type="range" id="rng-cw" min="0" max="600" step="10" value="0">
+          <label for="rng-cw">Carga en la charola <output id="o-cw">–</output></label>
+          <input type="range" id="rng-cw" min="0" max="2000" step="10" value="0">
+          <small>aquí es donde el profe pone la carga</small>
         </div>
         <div class="gauge" id="gauge" data-state="ok">
-          <div class="gauge-head"><span>Centro de gravedad vs. apoyo</span><b id="o-cg">–</b></div>
+          <div class="gauge-head"><span>Centro de gravedad</span><b id="o-cg">–</b></div>
           <div class="gauge-track"><div class="gauge-zone" id="g-zone"></div><div class="gauge-axis" id="g-axis"></div><div class="gauge-cg" id="g-cg"></div></div>
-          <div class="gauge-scale"><span>Contrapluma</span><span>Torre</span><span>Punta</span></div>
-        </div>
-        <div class="chart-box" id="chart-box" data-state="ok">
-          <div class="gauge-head"><span>Tabla de cargas</span><b id="o-chart">–</b></div>
-          <svg id="chart" viewBox="0 0 320 178" role="img" aria-label="Carga máxima según el radio del carro. Toca la gráfica para mover el carro y la carga."></svg>
-          <div class="chart-legend"><span><i class="k k-safe"></i>Carga permitida</span><span><i class="k k-tip"></i>Vuelco</span><span><i class="k k-str"></i>Resistencia</span></div>
+          <div class="gauge-scale"><span>← charola</span><span>torre</span><span>punta →</span></div>
         </div>
         <dl class="readout" id="readout" data-state="ok">
+          <div><dt>Factor de seguridad</dt><dd id="o-fs" class="hl">–</dd></div>
+          <div><dt>Uso de la pieza crítica</dt><dd id="o-use">–</dd></div>
           <div><dt>Momento de vuelco</dt><dd id="o-mo">–</dd></div>
           <div><dt>Momento estabilizador</dt><dd id="o-mr">–</dd></div>
-          <div><dt>Factor de seguridad</dt><dd id="o-fs" class="hl">–</dd></div>
-          <div><dt>Máx. antes de volcar</dt><dd id="o-max">–</dd></div>
+          <div><dt>Máx. antes de voltearse</dt><dd id="o-max">–</dd></div>
           <div><dt>Límite estructural</dt><dd id="o-lim">–</dd></div>
-          <div><dt>Uso de la pieza crítica</dt><dd id="o-use">–</dd></div>
           <div class="wide"><dt>Pieza más exigida</dt><dd id="o-crit">–</dd></div>
         </dl>
         <div class="row-btns">
           <button class="btn" id="btn-max">Llevar al límite</button>
-          <button class="btn ghost" id="btn-reset">Restablecer</button>
+          <button class="btn ghost" id="btn-reset">Vaciar</button>
         </div>
-        <p class="note">Las masas salen del propio modelo (3.2 g por palito jumbo). Las medidas son estimadas a partir de las fotos. El límite estructural supone que cada amarre de alambre aguanta unos 6 kgf; es una estimación didáctica.</p>
+        <details class="extra" id="extra">
+          <summary>Simular pesas en la pluma</summary>
+          <div class="inner">
+            <p class="note">Esto no está en la grúa real: es para ver qué pasaría si colgaras algo de la punta.</p>
+            <div class="ctl">
+              <label for="rng-x">Radio del carro <output id="o-x">–</output></label>
+              <input type="range" id="rng-x" min="130" max="480" step="5" value="400">
+            </div>
+            <div class="ctl">
+              <label for="rng-load">Pesas colgadas <output id="o-load">–</output></label>
+              <input type="range" id="rng-load" min="0" max="1500" step="10" value="0">
+            </div>
+            <div class="chart-box" id="chart-box" data-state="ok">
+              <div class="gauge-head"><span>Tabla de cargas de la pluma</span><b id="o-chart">–</b></div>
+              <svg id="chart" viewBox="0 0 320 178" role="img" aria-label="Carga máxima en la pluma según el radio del carro. Toca la gráfica para mover el carro y la carga."></svg>
+              <div class="chart-legend"><span><i class="k k-safe"></i>Carga permitida</span><span><i class="k k-tip"></i>Vuelco</span><span><i class="k k-str"></i>Resistencia</span></div>
+            </div>
+          </div>
+        </details>
+        <p class="note">Las masas salen del propio modelo (3.2 g por palito jumbo). El límite estructural supone que cada amarre aguanta unos 6 kgf y que los palitos encimados no están pegados; es una estimación didáctica.</p>
       </section>
 
       <section class="pane" data-pane="vista" hidden>
@@ -307,10 +435,13 @@ kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px sol
           <label for="rng-explode">Vista explotada <output id="o-explode">0 %</output></label>
           <input type="range" id="rng-explode" min="0" max="100" step="1" value="0">
         </div>
-        <label class="switch"><span>Cotas<small>Alcance, contrapluma, altura y huella</small></span><input type="checkbox" id="tgl-dims"></label>
+        <label class="switch"><span>Notas a mano<small>Flechas que señalan las partes</small></span><input type="checkbox" id="tgl-notes" checked></label>
+        <label class="switch"><span>Cotas<small>Largo, altura, ancho y base</small></span><input type="checkbox" id="tgl-dims"></label>
         <label class="switch"><span>Centro de gravedad<small>Punto de equilibrio y zona de apoyo en la mesa</small></span><input type="checkbox" id="tgl-cg" checked></label>
         <label class="switch"><span>Giro automático<small>La cámara rodea la grúa</small></span><input type="checkbox" id="tgl-rotate"></label>
-        <label class="switch"><span>Mesa<small>La mesa redonda de las fotos</small></span><input type="checkbox" id="tgl-table" checked></label>        <p class="note">Arrastra para girar, rueda o pellizco para acercar, clic derecho o dos dedos para desplazar. Toca una pieza para ver sus datos.</p>
+        <label class="switch"><span>Mesa<small>La mesa redonda de las fotos</small></span><input type="checkbox" id="tgl-table" checked></label>
+        <label class="switch"><span>Stickers<small>Puedes arrastrarlos a donde quieras</small></span><input type="checkbox" id="tgl-stickers" checked></label>
+        <p class="note">Arrastra para girar, rueda o pellizco para acercar, clic derecho o dos dedos para desplazar. Toca una pieza para ver sus datos.</p>
         <p class="note">Atajos: <kbd>1</kbd>–<kbd>4</kbd> vistas · <kbd>P</kbd> presentación · <kbd>Esc</kbd> salir · <kbd>←</kbd> <kbd>→</kbd> en el recorrido.</p>
       </section>
 
@@ -361,7 +492,7 @@ kbd{font:500 11px var(--f-mono);padding:1px 5px;border-radius:4px;border:1px sol
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="tip" id="tip" hidden></div>
-  <div class="loading" id="loading">Armando la grúa…</div>
+  <div class="loading" id="loading"><div>Armando la grúa<span>palito por palito…</span></div></div>
 </div>
 
 <script>
@@ -384,7 +515,9 @@ const V=(x=0,y=0,z=0)=>new THREE.Vector3(x,y,z);
 const UP=V(0,1,0);
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ?quieto desactiva animaciones (útil para capturas y proyectores lentos)
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches||/[?&]quieto/.test(location.search);
+if(reduceMotion) document.documentElement.classList.add('quieto');
 const cssVar=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const rand=mulberry32(20261023);
@@ -398,11 +531,11 @@ const yb=1.5*LAY+0.1;            // centro del marco de la base
 const y0=yb+4*LAY;               // pie de los postes
 const ytf=H+2;                   // marco superior
 const yc=ytf+8*LAY+1;            // eje de los rieles (7 capas)
-const XT=558, XC=-240, XR=120;   // punta de la pluma, extremo de la contrapluma, inicio de la pluma
+const XT=500, XC=-300, XR=120;   // punta de la pluma, extremo de la contrapluma, inicio de la pluma
 const DROOP=28;                  // la punta baja ~3 cm, como en las fotos
 const railY=x=>x<=XR?yc:yc-DROOP*(x-XR)/(XT-XR);
 const zwJ=x=>x<=XR?65:65-43*(x-XR)/(XT-XR);   // los rieles se juntan de 13 cm a 4.4 cm
-const XCW=-208, yPlate=yc-78;
+const XCW=-270, yPlate=yc-78;   // charola: su orilla queda ~10 cm afuera de la base
 const XF=bx+SW/2, XB=-XF, ZF=bz+SW/2;
 const CAP=59, G=9.81e-3, M_TROLLEY=6, M_PLATE=5, CABLE=70, MCAP_RAIL=4200;
 const STX=255;                   // donde los puntales tocan la pluma
@@ -460,7 +593,8 @@ const wireMat=new THREE.MeshStandardMaterial({color:0xbfc4c9,metalness:1,roughne
 const threadMat=new THREE.MeshStandardMaterial({color:0xE4DA1F,roughness:.55,emissive:0x3a3500,emissiveIntensity:.4});
 const steelMat=new THREE.MeshStandardMaterial({color:0x9ba1a7,metalness:.92,roughness:.33});
 const darkMat=new THREE.MeshStandardMaterial({color:0x2a2e33,metalness:.3,roughness:.6});
-const coinMat=new THREE.MeshStandardMaterial({color:0xC8A24A,metalness:.95,roughness:.3});
+const coinMat=new THREE.MeshStandardMaterial({color:0x8d949b,metalness:.9,roughness:.32});
+const fishMat=new THREE.MeshStandardMaterial({color:0xeef3f6,roughness:.15,metalness:0,transparent:true,opacity:.75});
 const trolleyMat=new THREE.MeshStandardMaterial({color:0xF2B705,roughness:.45,metalness:.1});
 const legMat=new THREE.MeshStandardMaterial({color:0x8a9096,metalness:.8,roughness:.4});
 const tableMat=new THREE.MeshStandardMaterial({color:0xf1f1ee,roughness:.38,metalness:0,envMapIntensity:.5});
@@ -538,18 +672,18 @@ const tiltG=new THREE.Group(), inner=new THREE.Group(); world.add(tiltG); tiltG.
 
 const PARTS={
   pluma:{name:'Pluma',desc:'Dos rieles de siete palitos encimados y escalonados, con travesaños encima como escalera. Se juntan de 13 a 4.4 cm hacia la punta y bajan un poco, igual que en la grúa real.',pivot:V(XR,yc,0),explode:V(120,200,0)},
-  contrapluma:{name:'Contrapluma',desc:'Los mismos rieles siguen 24 cm hacia atrás. En la punta cuelga la charola del lastre.',explode:V(-120,200,0)},
+  contrapluma:{name:'Contrapluma',desc:'Los mismos rieles siguen 30 cm hacia atrás del eje. De ahí cuelga la charola de carga.',explode:V(-120,200,0)},
   cabeza:{name:'Marco superior',desc:'Marco de 41 × 22 cm, más largo que la base, que recibe los rieles de la pluma y la contrapluma.',explode:V(0,130,0)},
   torre:{name:'Torre',desc:'Cuatro postes de tres capas con una X en cada cara, un anillo a media altura, diagonales que sostienen el marco superior y dos puntales largos que cargan la pluma.',explode:V(0,60,0)},
   base:{name:'Base',desc:'Marco cuadrado de 26 × 26 cm, de tres capas, con una cruz al centro.',explode:V(0,0,0)},
-  lastre:{name:'Lastre',desc:'Charola de cartón de 9 × 7 cm colgada con hilo amarillo. Se carga con monedas para equilibrar el momento de la carga.',explode:V(-120,130,0)},
+  lastre:{name:'Charola',desc:'Charola de cartón de 9 × 7 cm colgada con hilo de pescar, a unos 10 cm de la base. Aquí el profe pone la carga de la prueba.',explode:V(-120,130,0)},
 };
 const CARRO={name:'Carro y pesas',desc:'Agregado para la simulación: el carro recorre la pluma y cuelga pesas ranuradas de 100 g.'};
 for(const [id,p] of Object.entries(PARTS)){ p.id=id; p.pivot=p.pivot||V(); p.group=new THREE.Group(); p.group.position.copy(p.pivot); inner.add(p.group); p.count=0; p.mass=0; p.joints=0; p.sum=V(); }
 function addTo(pid,obj,wp){ const p=PARTS[pid]; obj.position.copy(wp).sub(p.pivot); p.group.add(obj); }
 
 const sticks=[], joints=[], threads=[], pickables=[];
-let threadLen=0, cutCount=0;
+let threadLen=0, fishLen=0, cutCount=0;
 
 function member(pid,A,B,o={}){
   const layers=o.layers??2, ext=o.ext??8, off=o.offset??0, kind=o.kind??pid;
@@ -597,10 +731,10 @@ function segTo(mesh,A,B,r){
   const d=B.clone().sub(A), len=d.length();
   mesh.position.copy(A); mesh.quaternion.setFromUnitVectors(UP,d.normalize()); mesh.scale.set(r,Math.max(len,.001),r);
 }
-function thread(pid,A,B,r=.4){
-  const m=new THREE.Mesh(unitCyl,threadMat); const p=PARTS[pid];
+function thread(pid,A,B,r=.4,fish=false){
+  const m=new THREE.Mesh(unitCyl,fish?fishMat:threadMat); const p=PARTS[pid];
   segTo(m,A.clone().sub(p.pivot),B.clone().sub(p.pivot),r); p.group.add(m);
-  m.userData={type:'thread',part:pid}; threads.push(m); threadLen+=A.distanceTo(B);
+  m.userData={type:'thread',part:pid,fish}; threads.push(m); if(fish) fishLen+=A.distanceTo(B); else threadLen+=A.distanceTo(B);
   return m;
 }
 function crossT(p1,p2,p3,p4){
@@ -679,7 +813,7 @@ const corners=[[-1,-1],[1,-1],[1,1],[-1,1]];
 /* ---- Contrapluma ---- */
 {
   const cr=[-1,1].map(s=>member('contrapluma',V(XC,yc,s*zwJ(XR)),V(XR,yc,s*zwJ(XR)),{layers:7,kind:'crail',ext:5}));
-  for(const x of [XC+10,-172,-106,-40,26,88]){
+  for(const x of [XC+10,-236,-172,-106,-40,26,88]){
     const y=yc+4.5*LAY+1.5, r=member('contrapluma',V(x,y,-75),V(x,y,75),{layers:2,kind:'crung',ext:0});
     jointOn(r,(75-zwJ(XR))/150); jointOn(r,(75+zwJ(XR))/150);
   }
@@ -691,13 +825,14 @@ const plate=new THREE.Mesh(new THREE.BoxGeometry(90,2.5,70),cardMat);
   plate.castShadow=plate.receiveShadow=true; plate.userData={part:'lastre',kind:'plate'};
   addTo('lastre',plate,V(XCW,yPlate,0)); pickables.push(plate);
   PARTS.lastre.mass+=M_PLATE; PARTS.lastre.sum.addScaledVector(V(XCW,yPlate,0),M_PLATE);
-  const zr=zwJ(XR), tops=[[XC+6,-zr],[XCW+40,-zr],[XC+6,zr],[XCW+40,zr]], bots=[[XCW-40,-30],[XCW+40,-30],[XCW-40,30],[XCW+40,30]];
-  tops.forEach(([x,z],i)=>thread('lastre',V(x,yc-4*LAY,z),V(bots[i][0],yPlate+1.3,bots[i][1])));
+  // cuelga con hilo de pescar de los rieles de la contrapluma
+  const zr=zwJ(XR), tops=[[XCW-28,-zr],[XCW+36,-zr],[XCW-28,zr],[XCW+36,zr]], bots=[[XCW-40,-30],[XCW+40,-30],[XCW-40,30],[XCW+40,30]];
+  tops.forEach(([x,z],i)=>thread('lastre',V(x,yc-4*LAY,z),V(bots[i][0],yPlate+1.3,bots[i][1]),.32,true));
   thread('lastre',V(XCW-43,yPlate+1.5,-33),V(XCW+43,yPlate+1.5,33),.35);
   thread('lastre',V(XCW-43,yPlate+1.5,33),V(XCW+43,yPlate+1.5,-33),.35);
 }
-const coinGeo=new THREE.CylinderGeometry(14,14,2.2,28);
-const coins=new THREE.InstancedMesh(coinGeo,coinMat,64); coins.count=0; coins.castShadow=true; coins.frustumCulled=false;
+const coinGeo=new THREE.CylinderGeometry(27,27,1,40);   // pesas ranuradas de 100 g sobre la charola
+const coins=new THREE.InstancedMesh(coinGeo,coinMat,24); coins.count=0; coins.castShadow=true; coins.frustumCulled=false;
 PARTS.lastre.group.add(coins);
 
 /* ---- Puntos de masa y medidas reales del modelo ---- */
@@ -709,6 +844,8 @@ const ctrPts=statPts.filter(p=>p.part==='contrapluma'||p.part==='lastre');
 const abovePts=statPts.filter(p=>p.part!=='base'&&p.part!=='torre');
 world.updateMatrixWorld(true);
 const bbox=new THREE.Box3().setFromObject(inner); bbox.min.multiplyScalar(1000); bbox.max.multiplyScalar(1000);
+const boomBox=new THREE.Box3().setFromObject(PARTS.pluma.group).union(new THREE.Box3().setFromObject(PARTS.contrapluma.group));
+const boomLen=(boomBox.max.x-boomBox.min.x)*1000;
 const baseBox=new THREE.Box3().setFromObject(PARTS.base.group); baseBox.min.multiplyScalar(1000); baseBox.max.multiplyScalar(1000);
 
 /* ---- Etiquetas de partes ---- */
@@ -778,8 +915,8 @@ function dim(a,b,tick,text){
 }
 
 /* ---------- Física ---------- */
-const state={x:420,load:0,cw:0,mode:'wood',explode:0,dims:false,cg:true};
-const DEF={x:420,load:0,cw:0};   // como en las fotos: sin pesas ni monedas
+const state={x:400,load:0,cw:0,mode:'wood',explode:0,dims:false,cg:true};
+const DEF={x:400,load:0,cw:0};   // como en las fotos: sin pesas ni monedas
 const KIND={rail:'Rieles de la pluma',strut:'Puntales de la pluma',rung:'Travesaños de la pluma',crail:'Rieles de la contrapluma',crung:'Travesaños de la contrapluma',leg:'Postes de la torre',brace:'Diagonales de la torre',ring:'Anillo de la torre',topframe:'Marco superior',base:'Marco de la base'};
 function utilCtx(xL,mL,mC){
   const ex=mL>0?mL+M_TROLLEY:0;
@@ -819,19 +956,25 @@ function evalUtil(xL,mL,mC,assign){
 function physics(){
   const xL=state.x, mL=state.load, mC=state.cw;
   const pts=statPts.concat([{x:XCW,y:yPlate+8,m:mC},{x:xL,y:yc,m:mL>0?M_TROLLEY:0},{x:xL,y:yc-CABLE-40,m:mL,load:true}]);
-  let M=0,Mx=0,My=0,Rf=0,Of=0,Rb=0,Ob=0,S=0;
+  let M=0,Mx=0,My=0,Rf=0,Of=0,Rb=0,Ob=0,S=0,Sb=0;
+  pts[pts.length-3].plate=true;
   for(const p of pts){
     M+=p.m; Mx+=p.m*p.x; My+=p.m*p.y;
     const df=XF-p.x; if(df>=0) Rf+=p.m*df; else Of-=p.m*df;
     const db=p.x-XB; if(db>=0) Rb+=p.m*db; else Ob-=p.m*db;
     if(!p.load) S+=p.m*df;
+    if(!p.plate) Sb+=p.m*db;
   }
   const FSf=Of>0?Rf/Of:Infinity, FSb=Ob>0?Rb/Ob:Infinity;
   const maxTip=xL>XF?Math.max(0,S/(xL-XF)):Infinity;
   const u0=evalUtil(xL,0,mC,false), u1=evalUtil(xL,1000,mC,false);
   const slope=(u1.u-u0.u)/1000, lim=slope>1e-9?Math.max(0,(1-u0.u)/slope):Infinity;
+  // lo que aguanta la charola: vuelco hacia atrás sobre la orilla de la base, y resistencia
+  const maxPlate=XCW<XB?Math.max(0,Sb/(XB-XCW)):Infinity;
+  const p0=evalUtil(xL,mL,0,false), p1=evalUtil(xL,mL,1000,false), ps=(p1.u-p0.u)/1000;
+  const plateLim=ps>1e-9?Math.max(0,(1-p0.u)/ps):Infinity;
   const cur=evalUtil(xL,mL,mC,state.mode==='stress');
-  return {M,xcg:Mx/M,ycg:My/M,Rf,Of,Rb,Ob,FSf,FSb,maxTip,lim,cur};
+  return {M,xcg:Mx/M,ycg:My/M,Rf,Of,Rb,Ob,FSf,FSb,maxTip,lim,cur,maxPlate,plateLim};
 }
 
 /* ---------- UI ---------- */
@@ -840,13 +983,14 @@ let P=null;
 const nm=v=>(v*9.81e-6).toFixed(2)+' N·m';
 function setFill(inp){ const p=(inp.value-inp.min)/(inp.max-inp.min)*100; inp.style.setProperty('--p',p+'%'); }
 function setCoins(g){
-  const n=Math.min(64,Math.round(g/10)); coins.count=n;
-  const order=[1,4,0,3,2,5], m4=new THREE.Matrix4(), q=new THREE.Quaternion(), s=V(1,1,1);
-  for(let i=0;i<n;i++){
-    const st=order[i%6], lv=Math.floor(i/6), gx=(st%3)-1, gz=Math.floor(st/3)-.5;
-    const r=mulberry32(i*31+7);
-    q.setFromAxisAngle(UP,r()*6.28);
-    m4.compose(V(XCW+gx*28+(r()-.5)*1.5,yPlate+1.25+1.15+lv*2.3,gz*31+(r()-.5)*1.5),q,s);
+  // pesas ranuradas de 100 g apiladas en la charola (la última, proporcional)
+  const n100=Math.floor(g/100), rem=g-n100*100, hs=[];
+  for(let i=0;i<n100;i++) hs.push(4.5); if(rem>0) hs.push(Math.max(.8,4.5*rem/100));
+  coins.count=Math.min(24,hs.length);
+  const m4=new THREE.Matrix4(), q=new THREE.Quaternion(); let y=yPlate+1.25;
+  for(let i=0;i<coins.count;i++){
+    const r=mulberry32(i*31+7); q.setFromAxisAngle(UP,r()*6.28);
+    m4.compose(V(XCW+(r()-.5)*2,y+hs[i]/2,(r()-.5)*2),q,V(1,hs[i],1)); y+=hs[i]+.2;
     coins.setMatrixAt(i,m4);
   }
   coins.instanceMatrix.needsUpdate=true;
@@ -869,21 +1013,26 @@ function update(){
   P=physics();
   const fs=Math.min(P.FSf,P.FSb), over=P.cur.u>1;
   let st='ok', txt='Estable';
-  if(fs<1){ st='bad'; txt=P.FSf<1?'Vuelca hacia la punta':'Vuelca hacia atrás'; }
-  else if(over){ st='bad'; txt='Sobrecarga estructural'; }
+  if(fs<1){ st='bad'; txt='Se voltea'; }
+  else if(over){ st='bad'; txt='Sobrecarga'; }
   else if(fs<1.5||P.cur.u>.8){ st='warn'; txt='Al límite'; }
+  const cs=$('#c-status'); cs.dataset.state=st;
+  cs.innerHTML=txt+(isFinite(fs)?' <small>FS '+fs.toFixed(2)+'</small>':'');
+  if(st!==lastState&&!reduceMotion){ cs.classList.remove('thunk'); void cs.offsetWidth; cs.classList.add('thunk'); }
   lastState=st;
-  const cs=$('#c-status'); cs.dataset.state=st; cs.textContent=txt+(isFinite(fs)?' · FS '+fs.toFixed(2):'');
-  for(const id of ['#gauge','#readout','#chart-box']) $(id).dataset.state=st;
+  for(const id of ['#gauge','#readout','#chart-box','#hero']) $(id).dataset.state=st;
+  const plateMax=Math.min(P.maxPlate,P.plateLim), byTip=P.maxPlate<=P.plateLim;
+  $('#o-hero').textContent=plateMax>=1000?(plateMax/1000).toFixed(2)+' kg':Math.round(plateMax)+' g';
+  $('#o-hero-n').textContent=byTip?'antes de que la grúa se voltee hacia atrás':'antes de que algo truene (estimado)';
   $('#o-x').textContent=cm(state.x);
   $('#o-load').textContent=state.load?state.load+' g':'sin carga';
-  $('#o-cw').textContent=state.cw?state.cw+' g · '+Math.round(state.cw/10)+' monedas':'charola vacía';
+  $('#o-cw').textContent=state.cw?state.cw+' g':'vacía';
   const fwd=P.FSf<=P.FSb;
   $('#o-mo').textContent=nm(fwd?P.Of:P.Ob);
   $('#o-mr').textContent=nm(fwd?P.Rf:P.Rb);
   $('#o-fs').textContent=isFinite(fs)?fs.toFixed(2)+(fwd?' (punta)':' (atrás)'):'∞';
-  $('#o-max').textContent=isFinite(P.maxTip)?Math.round(P.maxTip)+' g':'No vuelca aquí';
-  $('#o-lim').textContent=isFinite(P.lim)?Math.round(P.lim)+' g':'—';
+  $('#o-max').textContent=isFinite(P.maxPlate)?Math.round(P.maxPlate)+' g':'—';
+  $('#o-lim').textContent=isFinite(P.plateLim)?Math.round(P.plateLim)+' g':'—';
   $('#o-use').textContent=Math.round(P.cur.u*100)+' %';
   $('#o-crit').textContent=KIND[P.cur.kind]||P.cur.kind;
   $('#o-cg').textContent='x = '+cm(P.xcg);
@@ -897,13 +1046,13 @@ function update(){
   cgBall.position.set(P.xcg,P.ycg,0); cgRing.position.set(P.xcg,1.5,0); cgLabel.position.set(P.xcg+16,P.ycg+14,0);
   cgLine.geometry.setFromPoints([V(P.xcg,P.ycg,0),V(P.xcg,1,0)]); cgLine.computeLineDistances();
   setCoins(state.cw); setLoadVisual(state.load);
-  $('#o-chart').textContent='con '+state.cw+' g de lastre';
+  $('#o-chart').textContent='con '+state.cw+' g en la charola';
   if(chartCw!==state.cw) scheduleChart(); else drawChartMarker();
   if(state.mode==='stress') applyMaterials();
 }
 
 /* ---- Tabla de cargas ---- */
-const CH={l:44,r:312,t:10,b:136,x0:130,x1:520,y1:1500};
+const CH={l:44,r:312,t:10,b:136,x0:130,x1:480,y1:1500};
 const chx=x=>CH.l+(x-CH.x0)/(CH.x1-CH.x0)*(CH.r-CH.l);
 const chy=g=>CH.b-Math.min(g,CH.y1*1.1)/CH.y1*(CH.b-CH.t);
 function tipLimit(x,mC){
@@ -925,7 +1074,7 @@ function drawChart(){
   const path=arr=>arr.map(([x,g],i)=>(i?'L':'M')+chx(x).toFixed(1)+' '+chy(isFinite(g)?g:CH.y1*1.1).toFixed(1)).join(' ');
   const area=path(safe)+` L${chx(CH.x1)} ${CH.b} L${chx(CH.x0)} ${CH.b} Z`;
   const yt=[0,500,1000,1500].map(g=>`<line class="gl" x1="${CH.l}" x2="${CH.r}" y1="${chy(g)}" y2="${chy(g)}"/><text class="tk" x="${CH.l-6}" y="${chy(g)+3}" text-anchor="end">${g?(g/1000).toFixed(1)+' kg':'0'}</text>`).join('');
-  const xt=[150,250,350,450,520].map(x=>`<line class="gl" x1="${chx(x)}" x2="${chx(x)}" y1="${CH.t}" y2="${CH.b}"/><text class="tk" x="${chx(x)}" y="${CH.b+13}" text-anchor="middle">${x/10}</text>`).join('');
+  const xt=[150,250,350,480].map(x=>`<line class="gl" x1="${chx(x)}" x2="${chx(x)}" y1="${CH.t}" y2="${CH.b}"/><text class="tk" x="${chx(x)}" y="${CH.b+13}" text-anchor="middle">${x/10}</text>`).join('');
   $('#chart').innerHTML=`<defs><clipPath id="chclip"><rect x="${CH.l}" y="${CH.t}" width="${CH.r-CH.l}" height="${CH.b-CH.t}"/></clipPath></defs>${yt}${xt}
     <g clip-path="url(#chclip)"><path class="area" d="${area}"/><path class="ln-tip" d="${path(tip)}"/><path class="ln-str" d="${path(str)}"/></g>
     <g id="ch-mark"></g><text class="ax" x="${(CH.l+CH.r)/2}" y="${CH.b+28}" text-anchor="middle">Radio del carro (cm)</text>`;
@@ -965,7 +1114,7 @@ function applyMaterials(){
     j.material=mode==='bp'?bpJoint:mode==='xray'?(j.userData.type==='wire'?xrayWire:xrayThread):(j.userData.type==='wire'?wireMat:threadMat);
     const k=mode==='xray'?1.5:1; j.scale.set(k,k*(j.userData.sy||1),k);
   }
-  for(const t of threads) t.material=mode==='bp'?bpJoint:mode==='xray'?xrayThread:threadMat;
+  for(const t of threads) t.material=mode==='bp'?bpJoint:mode==='xray'?xrayThread:(t.userData.fish?fishMat:threadMat);
   plate.material=mode==='bp'?(selPart==='lastre'||hoverPart==='lastre'?bpHL:bpFill):mode==='xray'?xrayMat:cardMat;
   const carroHL=hoverPart==='carro'||selPart==='carro';
   [carriage,...brackets].forEach(m=>m.material=mode==='bp'?(carroHL?bpHL:bpFill):trolleyMat);
@@ -1008,7 +1157,8 @@ function resize(){
   $('#app').style.setProperty('--sheet-h',(phone?ph:0)+'px');
   // en celular, la grúa se centra en el hueco que dejan la marca arriba y el dock + hoja abajo
   const topH=phone?$('.brand').offsetHeight+12:0, botH=phone?ph+$('#dock').offsetHeight+10:0;
-  offX=phone||!pw?0:(pw+16)/2; offY=phone?(botH-topH)/2:0;
+  // en compu la grúa se corre a la derecha y abajo para no quedar bajo el título
+  offX=phone||!pw?0:(pw+16)/2-(presenting?0:70); offY=phone?(botH-topH)/2:(presenting?0:-24);
   visW=phone||!pw?w:w-pw-32; visH=phone?Math.max(120,h-botH-topH):h;
   renderer.setSize(w,h); labelR.setSize(w,h);
   camera.aspect=w/h; camera.fov=w/h<.8?46:32; camera.setViewOffset(w,h,offX,offY,w,h); camera.updateProjectionMatrix();
@@ -1066,8 +1216,9 @@ bind('#rng-explode','explode',()=>{ $('#o-explode').textContent=state.explode+' 
 function setSlider(id,v){ const el=$(id); el.value=v; setFill(el); }
 function syncSliders(){ setSlider('#rng-x',state.x); setSlider('#rng-load',state.load); setSlider('#rng-cw',state.cw); setSlider('#rng-explode',state.explode); $('#o-explode').textContent=state.explode+' %'; }
 $('#btn-max').addEventListener('click',()=>{
-  const lim=Math.min(P.maxTip,P.lim,1500);
-  state.load=Math.max(0,Math.floor(lim/10)*10); syncSliders(); update();
+  const lim=Math.min(P.maxPlate,P.plateLim,2000);
+  state.cw=Math.max(0,Math.floor(lim/10)*10); syncSliders(); update();
+  toast(`Límite: ${state.cw} g en la charola`);
 });
 $('#btn-reset').addEventListener('click',()=>{ Object.assign(state,DEF); syncSliders(); update(); });
 $('#tgl-dims').addEventListener('change',e=>{ state.dims=e.target.checked; });
@@ -1090,10 +1241,11 @@ $('#bom').innerHTML=[
   ['Palitos jumbo 150 × 18 × 2 mm',`${sticks.length} (${cutCount} recortados)`],
   ['Amarres de alambre',wires],
   ['Amarres de hilo',wraps],
-  ['Hilo en tirantes y colgantes',cm(threadLen)],
+  ['Hilo amarillo en amarres',cm(threadLen)],
+  ['Hilo de pescar de la charola',cm(fishLen)],
   ['Charola de cartón 9 × 7 cm','1'],
   ['Masa de la estructura',Math.round(STRUCT_MASS)+' g'],
-  ['Largo total',cm(bbox.max.x-bbox.min.x)],
+  ['Largo total',cm(boomLen)],
   ['Altura total',cm(bbox.max.y)],
 ].map(([a,b])=>`<li><span>${a}</span><span>${b}</span></li>`).join('');
 $('#c-sticks').textContent=sticks.length;
@@ -1101,17 +1253,60 @@ $('#c-joints').textContent=joints.length;
 $('#c-mass').textContent=Math.round(STRUCT_MASS);
 $('#x-count').textContent=`${wires} amarres de alambre y ${wraps} de hilo`;
 
+/* ---------- Toques de taller: cinta, stickers, notas a mano ---------- */
+{
+  const items=['Precaución','Grúa en prueba',`${cm(boomLen)} de punta a punta`,`${cm(bbox.max.y)} de alto`,`base 26 × 26 cm`,`${sticks.length} palitos jumbo`,`${joints.length} amarres`,'Hecha a mano'];
+  const one=items.map(s=>`<span>${s}</span><span>✕</span>`).join('');
+  $('#tape').innerHTML=one+one;
+}
+$('#s-sticks').textContent=sticks.length; $('#s-joints').textContent=joints.length;
+$$('[data-sticker]').forEach(el=>{
+  let sx=0,sy=0,ox=0,oy=0;
+  el.addEventListener('pointerdown',e=>{ el.setPointerCapture(e.pointerId); el.classList.add('drag'); el.style.animation='none'; sx=e.clientX-ox; sy=e.clientY-oy; });
+  el.addEventListener('pointermove',e=>{ if(!el.classList.contains('drag')) return; ox=e.clientX-sx; oy=e.clientY-sy; el.style.setProperty('--dx',ox+'px'); el.style.setProperty('--dy',oy+'px'); });
+  const up=()=>el.classList.remove('drag'); el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+});
+$('#tgl-stickers').addEventListener('change',e=>$$('[data-sticker]').forEach(s=>s.hidden=!e.target.checked));
+if(!reduceMotion&&matchMedia('(pointer: fine)').matches){
+  const big=$('#bigtype'); let pend=null;
+  addEventListener('pointermove',e=>{ pend=e; });
+  (function par(){ if(pend){ big.style.setProperty('--px',((pend.clientX/innerWidth-.5)*-36)+'px'); big.style.setProperty('--py',((pend.clientY/innerHeight-.5)*-18)+'px'); pend=null; } requestAnimationFrame(par); })();
+}
+function countUp(el,to){
+  if(reduceMotion){ el.textContent=to; return; }
+  const t0=performance.now()+600, dur=1300;
+  (function step(now){ const k=Math.min(1,Math.max(0,(now-t0)/dur)); el.textContent=Math.round(to*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(step); })(t0);
+}
+countUp($('#c-sticks'),sticks.length); countUp($('#c-joints'),joints.length); countUp($('#c-mass'),Math.round(STRUCT_MASS));
+
+const notes=[];
+let notesOn=false;
+state.notes=!isPhone();
+$('#tgl-notes').checked=state.notes;
+$('#tgl-notes').addEventListener('change',e=>{ state.notes=e.target.checked; });
+function handNote(text,pos,side,down=false){
+  const el=document.createElement('div'); el.className='hand-note';
+  const w=78,h=48, r=side==='r';
+  const d=r?`M${w-4} 4 C ${w-34} 2, 12 14, 5 ${h-5} M5 ${h-5} l1 -12 M5 ${h-5} l11 -6`
+           :`M4 4 C 34 2, ${w-12} 14, ${w-5} ${h-5} M${w-5} ${h-5} l-1 -12 M${w-5} ${h-5} l-11 -6`;
+  el.innerHTML=`<svg width="${w}" height="${h}" style="left:${r?0:-w}px;top:${down?0:-h}px;${down?'transform:scaleY(-1)':''}" aria-hidden="true"><path d="${d}"/></svg><span style="${r?`left:${w-8}px`:`right:${w-8}px`};top:${down?h-2:-h-16}px">${text}</span>`;
+  const o=new CSS2DObject(el); o.position.copy(pos); inner.add(o); o.visible=false; notes.push({o,el});
+}
+handNote('aquí carga el profe',V(XCW-30,yPlate-2,34),'l',true);
+handNote('puntales',V(bx+(STX-bx)*.5,(y0+railY(STX))*.5,(bz+zwJ(STX))*.5+6),'r');
+handNote('base 26 × 26',V(bx,yb+4,bz+8),'r');
+
 /* ---------- Recorrido guiado ---------- */
 const TOUR=[
-  {t:'Nuestra grúa',view:'3d',x:()=>`Una grúa torre hecha con ${sticks.length} palitos jumbo, ${wires} amarres de alambre y ${wraps} de hilo. Mide ${cm(bbox.max.x-bbox.min.x)} de largo, ${cm(bbox.max.y)} de alto y ${cm(2*tzT+SW)} de ancho, y pesa unos ${Math.round(STRUCT_MASS)} g.`},
+  {t:'Nuestra grúa',view:'3d',x:()=>`Una grúa torre hecha con ${sticks.length} palitos jumbo, ${wires} amarres de alambre y ${wraps} de hilo. Mide ${cm(boomLen)} de largo, ${cm(bbox.max.y)} de alto y ${cm(2*tzT+SW)} de ancho, y pesa unos ${Math.round(STRUCT_MASS)} g.`},
   {t:'La base',part:'base',dir:[.55,.55,.85],d:.6,x:()=>`Marco cuadrado de 26 × 26 cm, de tres capas, con una cruz al centro. Su borde queda a ${cm(XF)} del eje de la torre: si el centro de gravedad pasa de ahí, la grúa se vuelca.`},
   {t:'La torre',part:'torre',dir:[.85,.3,.75],d:.75,x:()=>'Cuatro postes de tres capas con una X en cada cara. Un triángulo no se deforma aunque lo empujen, por eso la torre no se ladea. Dos puntales largos salen de la base y sostienen la pluma por abajo.'},
   {t:'Marco superior',part:'cabeza',dir:[.4,.6,.9],d:.62,x:()=>'Mide 41 × 22 cm: es más largo que la base, así que unas diagonales lo apoyan sobre los postes. Encima corren los dos rieles de la pluma y la contrapluma.'},
   {t:'La pluma',part:'pluma',dir:[.25,.5,1],d:.85,x:()=>`Dos rieles de siete palitos encimados en escalón, con travesaños encima. Se juntan de ${cm(2*zwJ(XR))} a ${cm(2*zwJ(XT))} para que la punta pese menos y llegan a ${cm(XT)} del eje de la torre.`},
-  {t:'Contrapluma y lastre',part:'lastre',dir:[-.55,.35,.85],d:.55,x:()=>'Los rieles siguen 24 cm hacia atrás. De la punta cuelga la charola de cartón: las monedas del lastre empujan el centro de gravedad hacia atrás y compensan la carga.'},
+  {t:'La charola',part:'lastre',dir:[-.55,.35,.85],d:.55,x:()=>`Cuelga con hilo de pescar de la contrapluma, a unos ${cm(-XCW-45-XF)} de la orilla de la base. Aquí el profe pone la carga: entre más lejos esté, más momento hace cada gramo.`},
   {t:'Los amarres',view:'3d',mode:'xray',x:()=>`En rayos X se ven todas las uniones: ${wires} amarres de alambre que pasan por los hoyos de los palitos y ${wraps} amarres de hilo en los cruces. Son los puntos más débiles de la estructura.`},
-  {t:'Estabilidad',setup:{x:450,load:150,cw:250},target:[.12,.06,0],dir:[.3,.85,.75],d:1.05,x:()=>`El rombo amarillo es el centro de gravedad de todo el conjunto. Mientras quede sobre el cuadro marcado en la mesa, la grúa se sostiene. Con ${state.load} g a ${cm(state.x)} el factor de seguridad es ${Math.min(P.FSf,P.FSb).toFixed(2)}, y se caería con unos ${Math.round(P.maxTip)} g.`},
-  {t:'Esfuerzos',setup:{x:520,load:200,cw:400},view:'lateral',mode:'stress',x:()=>`Los colores muestran qué tanto trabaja cada palito. Con ${state.load} g cerca de la punta, la pieza más exigida es: ${(KIND[P.cur.kind]||'').toLowerCase()}, al ${Math.round(P.cur.u*100)} % de lo que estimamos que aguanta. Como los palitos sólo están amarrados y no pegados, cada uno trabaja casi solo.`},
+  {t:'La prueba de carga',setup:{x:400,load:0,cw:600},target:[.0,.06,0],dir:[.2,.85,.8],d:1.05,x:()=>`El rombo amarillo es el centro de gravedad de todo: grúa y carga. Mientras quede sobre el cuadro de la base, no se cae. Con ${state.cw} g en la charola el factor de seguridad es ${Math.min(P.FSf,P.FSb).toFixed(2)}; la pluma larga hace de contrapeso y se voltearía hacia atrás con unos ${Math.round(P.maxPlate)} g.`},
+  {t:'Esfuerzos',setup:{x:400,load:0,cw:1000},view:'lateral',mode:'stress',x:()=>`Los colores muestran qué tanto trabaja cada palito. Con ${state.cw} g en la charola, la pieza más exigida es: ${(KIND[P.cur.kind]||'').toLowerCase()}, al ${Math.round(P.cur.u*100)} % de lo que estimamos que aguanta. Como los palitos sólo están amarrados y no pegados, cada uno trabaja casi solo.`},
 ];
 $('#tour-bar').innerHTML=TOUR.map(()=>'<i></i>').join('');
 function startTour(){
@@ -1281,6 +1476,8 @@ function frame(now){
   const flat=e<.02&&!building;
   dimsG.visible=state.dims&&flat; dimLabels.forEach(o=>o.visible=dimsG.visible);
   cgG.visible=state.cg&&flat; cgLabel.visible=cgG.visible;
+  const nOn=!!state.notes&&flat&&tourI<0&&(state.mode==='wood'||state.mode==='bp');
+  if(nOn!==notesOn){ notesOn=nOn; for(const n of notes){ n.o.visible=nOn; n.el.classList.toggle('on',nOn); } }
   const showLoad=state.load>0&&!building;
   trolley.visible=cable.visible=loadG.visible=showLoad;
   loadLabel.visible=e<.3&&showLoad;
